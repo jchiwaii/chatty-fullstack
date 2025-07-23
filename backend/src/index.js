@@ -2,10 +2,13 @@ import express from "express";
 import authRoutes from "./routes/auth.js";
 import dotenv from "dotenv";
 import connectDB from "./lib/db.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
+
+app.use(cookieParser());
 
 // Add CORS middleware
 app.use((req, res, next) => {
