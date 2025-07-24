@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useAuth } from "./store/useAuth";
 import { Loader } from "lucide-react";
 import { Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuth();
@@ -47,6 +48,7 @@ const App = () => {
         />
         <Route path="/settings" element={<Settingspage />} />
       </Routes>
+      <Toaster />
     </div>
   );
 };
