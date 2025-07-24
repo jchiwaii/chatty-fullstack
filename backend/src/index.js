@@ -4,24 +4,22 @@ import dotenv from "dotenv";
 import connectDB from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import messageRoutes from "./routes/message.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
+app.use(cors());
+
 app.use(cookieParser());
 
-// Add CORS middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  next();
-});
-
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get("/", (req, res) => {
