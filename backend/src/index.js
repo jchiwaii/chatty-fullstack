@@ -1,5 +1,7 @@
 import express from "express";
 import authRoutes from "./routes/auth.js";
+import messageRoutes from "./routes/messages.js";
+
 import dotenv from "dotenv";
 import connectDB from "./lib/db.js";
 import cookieParser from "cookie-parser";
@@ -50,6 +52,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
 const PORT = process.env.PORT || 3000;
 

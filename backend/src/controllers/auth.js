@@ -144,7 +144,7 @@ export const updateProfile = async (req, res) => {
     }
 
     const userId = req.user._id;
-    console.log("User ID:", userId);
+    // console.log("User ID:", userId);
 
     if (!profilePicture) {
       console.error("No profile picture in request");
