@@ -1,7 +1,7 @@
 import e from "express";
-import { generateToken } from "../lib/utils.js";
-import User from "../models/user.js";
 import bcrypt from "bcryptjs";
+import User from "../models/user.js";
+import { generateToken } from "../lib/utils.js";
 
 export const signup = async (req, res) => {
   const { username, email, password } = req.body;
@@ -117,44 +117,62 @@ export const logout = (req, res) => {
   res.send("Logout endpoint");
 };
 
-export const updateProfile = async (req, res) => {
+export const checkAuth = async (req, res) => {
   try {
-    const { profilePicture } = req.body;
-    const userId = req.user._id;
-
-    if (!profilePicture) {
-      return res.status(400).json({ message: "Profile picture is required" });
-    }
-
-    const uploadResponse = await cloudinary.uploader.upload(profilePicture);
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profilePicture: uploadResponse.secure_url },
-      { new: true }
-    );
-
-    res.status(200).json({ updatedUser });
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    console.log("CheckAuth - User from middleware:", req.user);
+    return res.status(200).json(req.user);
   } catch (error) {
-    console.error("Update profile error:", error);
-    res.status(500).json({ message: "Internal server error" });
-    return;
+    console.error("Error in checkAuth controller:", error.message);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export const checkAuth = (req, res) => {
-  if (req.user) {
-    res.status(200).json({
-      _id: req.user._id,
-      username: req.user.username,
-      email: req.user.email,
-      profilePicture: req.user.profilePicture,
-    });
-  } else {
-    res.status(401).json({ message: "Not authorized" });
+export const updateProfile = async (req, res) => {
+  try {
+    // console.log("=== UPDATE PROFILE START ===");
+    // console.log("Request headers:", req.headers);
+    // console.log("Request cookies:", req.cookies);
+    // console.log("User from middleware:", req.user);
+    // console.log("Request body:", req.body);
+    // console.log("Body size:", JSON.stringify(req.body).length);
+
+    const { profilePicture } = req.body;
+
+    if (!req.user) {
+      console.error("No user found in request");
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const userId = req.user._id;
+    console.log("User ID:", userId);
+
+    if (!profilePicture) {
+      console.error("No profile picture in request");
+      return res.status(400).json({ message: "Profile picture is required" });
+    }
+
+    console.log("Attempting to update user with ID:", userId);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePicture },
+      { new: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      console.error("User not found in database");
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // console.log("Profile updated successfully");
+    // console.log("=== UPDATE PROFILE END ===");
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    // console.error("=== UPDATE PROFILE ERROR ===");
+    // console.error("Error message:", error.message);
+    // console.error("Error stack:", error.stack);
+    // console.error("Error name:", error.name);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

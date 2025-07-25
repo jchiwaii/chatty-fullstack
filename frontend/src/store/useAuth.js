@@ -57,4 +57,17 @@ export const useAuth = create((set) => ({
       throw error; // Re-throw so the component knows it failed
     }
   },
+  updateProfile: async (formData) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axios.put("/auth/update-profile", formData);
+      set({ authUser: res.data, isUpdatingProfile: false });
+      toast.success("Profile updated successfully!"); // Handle success here
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      set({ isUpdatingProfile: false });
+      toast.error(error.response?.data?.message || "Profile update failed"); // Handle error here
+      throw error; // Re-throw so the component knows it failed
+    }
+  },
 }));
