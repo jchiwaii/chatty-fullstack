@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../store/useAuth";
-import { MessageSquare, Mail, Lock, Eye, EyeOff } from "lucide-react";
-import AuthImagePattern from "../components/AuthImagePattern";
+import { MessageCircle, Github } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Loginpage = () => {
@@ -9,138 +9,125 @@ const Loginpage = () => {
     email: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = React.useState(false);
   const { login, isLoggingin } = useAuth();
 
   const validateForm = () => {
     const { email, password } = formData;
-
     if (!email || !password) {
       toast.error("All fields are required.");
       return false;
     }
-
     if (!/\S+@\S+\.\S+/.test(email)) {
       toast.error("Please enter a valid email address.");
       return false;
     }
-
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate form first
     if (!validateForm()) {
-      return; // Stop execution if validation fails
+      return;
     }
-
     try {
       await login(formData);
-      // Don't show success toast here - let the login function handle it
     } catch (error) {
       console.error("Login error:", error);
     }
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="flex flex-col items-center justify-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center mb-8">
-            <div className="flex flex-col items-center gap-2 group">
-              <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <MessageSquare className="size-6 text-primary" />
-              </div>
-              <h1 className="text-2xl font-semibold mt-2">Welcome back</h1>
-              <p className="text-sm text-muted-foreground">
-                Sign in to your account to continue chatting.
-              </p>
-            </div>
+    <div className="flex items-center justify-center min-h-screen bg-black text-white font-sans">
+      <div className="w-full max-w-md p-8 space-y-6">
+        <div className="text-center">
+          <MessageCircle className="mx-auto h-10 w-auto text-zinc-500" />
+          <h2 className="mt-4 text-2xl font-medium tracking-tight">Sign In</h2>
+          <p className="mt-2 text-sm text-zinc-400">
+            Enter your email below to login to your account
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="email" className="sr-only">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              className="block w-full px-3 py-2 bg-black border border-zinc-800 rounded-md text-sm placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              required
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
+          <div>
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="sr-only">
+                Password
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Mail className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="email"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                />
-              </div>
+              <Link
+                to="/forgot-password"
+                className="text-sm font-medium text-white hover:underline"
+              >
+                Forgot your password?
+              </Link>
             </div>
+            <input
+              id="password"
+              type="password"
+              className="mt-1 block w-full px-3 py-2 bg-black border border-zinc-800 rounded-md text-sm placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              required
+            />
+          </div>
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Lock className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="input input-bordered w-full pl-10 pr-10"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="size-5 text-base-content/40" />
-                  ) : (
-                    <Eye className="size-5 text-base-content/40" />
-                  )}
-                </button>
-              </div>
-            </div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium text-black bg-white hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-offset-black transition-colors disabled:opacity-50"
+            disabled={isLoggingin}
+          >
+            {isLoggingin ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "Login"
+            )}
+          </button>
+        </form>
 
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
-              disabled={isLoggingin}
-            >
-              {isLoggingin ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                "Sign In"
-              )}
-            </button>
-          </form>
-
-          <div className="text-center">
-            <p className="text-base-content/60">
-              Don't have an account?{" "}
-              <a href="/signup" className="link link-primary">
-                Create account
-              </a>
-            </p>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-zinc-800" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-black text-zinc-500">
+              Or continue with
+            </span>
           </div>
         </div>
+
+        <div>
+          <button className="w-full flex items-center justify-center py-2 px-4 border border-zinc-800 rounded-md text-sm font-medium text-white bg-transparent hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-700 focus:ring-offset-black transition-colors">
+            <Github className="h-4 w-4 mr-2" />
+            Sign in with GitHub
+          </button>
+        </div>
+
+        <p className="mt-6 text-center text-sm text-zinc-400">
+          Don't have an account?{" "}
+          <Link to="/signup" className="font-medium text-white hover:underline">
+            Sign Up
+          </Link>
+        </p>
       </div>
-      <AuthImagePattern
-        title="Welcome Back"
-        description="Sign in to continue your conversations and stay connected with friends."
-      />
     </div>
   );
 };

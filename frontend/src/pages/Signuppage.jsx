@@ -1,13 +1,14 @@
 import React from "react";
 import { useAuth } from "../store/useAuth";
-import { MessageSquare, User, Mail, Lock, Eye, EyeOff } from "lucide-react";
-import AuthImagePattern from "../components/AuthImagePattern";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { Github, MessageCircle } from "lucide-react"; // Example icon
 
 const Signuppage = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
   const [formData, setFormData] = React.useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -15,11 +16,11 @@ const Signuppage = () => {
   const { signup, isSigningup } = useAuth();
 
   const validateForm = () => {
-    const { fullName, email, password } = formData;
+    const { firstName, lastName, username, email, password } = formData;
 
-    if (!fullName || !email || !password) {
+    if (!firstName || !lastName || !username || !email || !password) {
       toast.error("All fields are required.");
-      return false; // Return false after showing error
+      return false;
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
@@ -32,125 +33,139 @@ const Signuppage = () => {
       return false;
     }
 
-    return true; // Only return true if all validations pass
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form first
     if (!validateForm()) {
-      return; // Stop execution if validation fails
+      return;
     }
 
     try {
       await signup({
-        username: formData.fullName,
+        username: formData.username,
         email: formData.email,
         password: formData.password,
       });
-      // Don't show success toast here - let the signup function handle it
-      // toast.success("Account created successfully!");
     } catch (error) {
-      // Only show error if signup function didn't already handle it
       console.error("Signup error:", error);
     }
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="flex flex-col items-center justify-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center mb-8">
-            <div className="flex flex-col items-center gap-2 group">
-              <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <MessageSquare className="size-6 text-primary" />
-              </div>
-              <h1 className="text-2xl font-semibold mt-2">Create an account</h1>
-              <p className="text-sm text-muted-foreground">
-                Join us to start chatting with friends and family.
-              </p>
+    <div className="flex items-center justify-center min-h-screen bg-black text-white font-sans">
+      <div className="w-full max-w-md p-8 space-y-6">
+        <div className="text-center">
+          <MessageCircle className="mx-auto h-10 w-auto text-zinc-500" />
+          <h2 className="mt-4 text-2xl font-medium tracking-tight">
+            Create an account
+          </h2>
+          <p className="mt-2 text-sm text-zinc-400">
+            Welcome! Please fill in the details to get started.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex space-x-4">
+            <div className="w-1/2">
+              <label htmlFor="firstName" className="sr-only">
+                First Name
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                autoComplete="given-name"
+                required
+                className="block w-full px-3 py-2 bg-black border border-zinc-800 rounded-md text-sm placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
+              />
+            </div>
+            <div className="w-1/2">
+              <label htmlFor="lastName" className="sr-only">
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                autoComplete="family-name"
+                required
+                className="block w-full px-3 py-2 bg-black border border-zinc-800 rounded-md text-sm placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
+              />
             </div>
           </div>
+          <div>
+            <label htmlFor="username" className="sr-only">
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              required
+              className="block w-full px-3 py-2 bg-black border border-zinc-800 rounded-md text-sm placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="Username"
+              value={formData.username}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="sr-only">
+              Email address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              className="block w-full px-3 py-2 bg-black border border-zinc-800 rounded-md text-sm placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+            />
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Full Name</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <User className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="text"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="Enter your full name"
-                  value={formData.fullName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
-                  }
-                  required
-                />
-              </div>
-            </div>
+          <div>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              className="block w-full px-3 py-2 bg-black border border-zinc-800 rounded-md text-sm placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+          </div>
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Mail className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="email"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Lock className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="input input-bordered w-full pl-10 pr-10"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="size-5 text-base-content/40" />
-                  ) : (
-                    <Eye className="size-5 text-base-content/40" />
-                  )}
-                </button>
-              </div>
-            </div>
-
+          <div>
             <button
               type="submit"
-              className="btn btn-primary w-full"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium text-black bg-white hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-offset-black transition-colors disabled:opacity-50"
               disabled={isSigningup}
             >
               {isSigningup ? (
@@ -159,22 +174,34 @@ const Signuppage = () => {
                 "Create Account"
               )}
             </button>
-          </form>
+          </div>
+        </form>
 
-          <div className="text-center">
-            <p className="text-base-content/60">
-              Already have an account?{" "}
-              <a href="/login" className="link link-primary">
-                Sign in
-              </a>
-            </p>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-zinc-800" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-black text-zinc-500">
+              Or continue with
+            </span>
           </div>
         </div>
+
+        <div>
+          <button className="w-full flex items-center justify-center py-2 px-4 border border-zinc-800 rounded-md text-sm font-medium text-white bg-transparent hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-700 focus:ring-offset-black transition-colors">
+            <Github className="h-4 w-4 mr-2" />
+            Sign up with GitHub
+          </button>
+        </div>
+
+        <p className="mt-6 text-center text-sm text-zinc-400">
+          Already have an account?{" "}
+          <Link to="/login" className="font-medium text-white hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
-      <AuthImagePattern
-        title="Join Chatty"
-        description="Connect with friends and family instantly."
-      />
     </div>
   );
 };
