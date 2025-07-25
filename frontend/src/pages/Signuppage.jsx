@@ -2,7 +2,9 @@ import React from "react";
 import { useAuth } from "../store/useAuth";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { Github, MessageCircle } from "lucide-react"; // Example icon
+import { useGoogleLogin } from "@react-oauth/google";
+import { MessageCircle } from "lucide-react"; // Example icon
+import GoogleIcon from "../components/GoogleIcon";
 
 const Signuppage = () => {
   const [formData, setFormData] = React.useState({
@@ -53,6 +55,18 @@ const Signuppage = () => {
       console.error("Signup error:", error);
     }
   };
+
+  const { googleSignIn } = useAuth();
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      googleSignIn(tokenResponse.access_token);
+    },
+    onError: (error) => {
+      console.error("Login Failed:", error);
+      toast.error("Google login failed");
+    },
+  });
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black text-white font-sans">
@@ -189,9 +203,12 @@ const Signuppage = () => {
         </div>
 
         <div>
-          <button className="w-full flex items-center justify-center py-2 px-4 border border-zinc-800 rounded-md text-sm font-medium text-white bg-transparent hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-700 focus:ring-offset-black transition-colors">
-            <Github className="h-4 w-4 mr-2" />
-            Sign up with GitHub
+          <button
+            onClick={() => handleGoogleLogin()}
+            className="w-full flex items-center justify-center py-2 px-4 border border-zinc-800 rounded-md text-sm font-medium text-white bg-transparent hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-700 focus:ring-offset-black transition-colors"
+          >
+            <GoogleIcon className="h-4 w-4 mr-2" />
+            Sign up with Google
           </button>
         </div>
 

@@ -58,6 +58,19 @@ export const useAuth = create((set) => ({
       throw error; // Re-throw so the component knows it failed
     }
   },
+  googleSignIn: async (token) => {
+    set({ isLoggingin: true });
+    try {
+      const res = await axios.post("/auth/google", { token });
+      set({ authUser: res.data, isLoggingin: false });
+      toast.success("Logged in successfully!");
+    } catch (error) {
+      console.error("Error logging in with Google:", error);
+      set({ isLoggingin: false });
+      toast.error(error.response?.data?.message || "Google login failed");
+      throw error;
+    }
+  },
   updateProfile: async (formData) => {
     set({ isUpdatingProfile: true });
     try {

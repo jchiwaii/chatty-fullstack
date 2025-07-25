@@ -2,6 +2,52 @@ import e from "express";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
 import { generateToken } from "../lib/utils.js";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleSignIn = async (req, res) => {
+  const { token } = req.body;
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const { name, email, sub, picture } = ticket.getPayload();
+
+    let user = await User.findOne({ googleId: sub });
+
+    if (!user) {
+      user = await User.findOne({ email });
+      if (user) {
+        user.googleId = sub;
+        await user.save();
+      } else {
+        const newUser = new User({
+          googleId: sub,
+          username: name,
+          email,
+          profilePicture: picture,
+          isGoogleUser: true,
+        });
+        await newUser.save();
+        user = newUser;
+      }
+    }
+
+    generateToken(user._id, res);
+
+    return res.status(200).json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      profilePicture: user.profilePicture,
+    });
+  } catch (error) {
+    console.error("Google Sign-In error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 export const signup = async (req, res) => {
   const { username, email, password } = req.body;
