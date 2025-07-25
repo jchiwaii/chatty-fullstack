@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import { get } from "mongoose";
 
-export const useChat = create((set) => ({
+export const useChat = create((set, get) => ({
   messages: [],
   users: [],
   selectedUser: null,
@@ -35,4 +35,22 @@ export const useChat = create((set) => ({
 
   // TODO: Optimize this function to avoid unnecessary re-renders
   setSelectedUser: (user) => set({ selectedUser: user }),
+
+  sendMessage: async (messageData) => {
+    const { selectedUser, messages } = get();
+
+    try {
+      const res = await axiosInstance.post(
+        `/messages/send/${selectedUser._id}`,
+        messageData
+      );
+      set({
+        messages: [...messages, res.data],
+      });
+      toast.success("Message sent successfully");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("Failed to send message");
+    }
+  },
 }));

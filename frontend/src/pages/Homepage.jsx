@@ -2,7 +2,7 @@ import { useChat } from "../store/useChat";
 
 import Sidebar from "../components/Sidebar";
 import NoChatSelected from "../components/NoChatSelected";
-// import ChatContainer from "../components/ChatContainer";
+import ChatContainer from "../components/ChatContainer";
 
 const HomePage = () => {
   const { selectedUser } = useChat();

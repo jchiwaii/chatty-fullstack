@@ -3,6 +3,11 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.js";
 import { generateToken } from "../lib/utils.js";
 import { OAuth2Client } from "google-auth-library";
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from "../lib/validation.js";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -58,19 +63,17 @@ export const signup = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    if (password.length < 6) {
+    if (!validatePassword(password)) {
       return res
         .status(400)
         .json({ message: "Password must be at least 6 characters long" });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!validateEmail(email)) {
       return res.status(400).json({ message: "Invalid email format" });
     }
 
-    const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
-    if (!usernameRegex.test(username)) {
+    if (!validateUsername(username)) {
       return res.status(400).json({
         message:
           "Username must be at least 3 characters long and can only contain letters, numbers, and underscores",
