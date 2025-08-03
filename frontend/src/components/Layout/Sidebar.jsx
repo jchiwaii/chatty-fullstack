@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { useAuth } from "../../store/useAuth";
+import { useLayout } from "../../store/useLayout.jsx";
 import {
   MessageSquare,
   Users,
@@ -17,7 +18,7 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Context for sidebar state
 const SidebarContext = createContext(undefined);
@@ -244,11 +245,21 @@ const SidebarBody = (props) => {
 };
 
 // Icon Link Component
-const IconLink = ({ link, className, isActive, ...props }) => {
+const IconLink = ({ link, className, isActive, panelKey, ...props }) => {
+  const { setActivePanel } = useLayout();
+
+  const handleClick = (e) => {
+    if (panelKey) {
+      e.preventDefault();
+      setActivePanel(panelKey);
+    }
+  };
+
   return (
     <Tooltip text={link.label}>
       <Link
         to={link.href}
+        onClick={handleClick}
         className={cn(
           "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 group",
           isActive
@@ -360,16 +371,26 @@ const MobileUserProfile = () => {
 // Main Sidebar Component
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
-  const location = useLocation();
+  const { activePanel, setActivePanel } = useLayout();
 
   const navigation = [
-    { label: "Chats", href: "/", icon: MessageSquare },
-    { label: "Groups", href: "/groups", icon: Users },
-    { label: "Contacts", href: "/contacts", icon: UserPlus },
-    { label: "Settings", href: "/settings", icon: Settings },
+    { label: "Chats", href: "/", icon: MessageSquare, panelKey: "chats" },
+    { label: "Groups", href: "/groups", icon: Users, panelKey: "groups" },
+    {
+      label: "Contacts",
+      href: "/contacts",
+      icon: UserPlus,
+      panelKey: "contacts",
+    },
+    {
+      label: "Settings",
+      href: "/settings",
+      icon: Settings,
+      panelKey: "settings",
+    },
   ];
 
-  const isActive = (href) => location.pathname === href;
+  const isActive = (panelKey) => activePanel === panelKey;
 
   return (
     <SidebarProvider open={open} setOpen={setOpen} animate={false}>
@@ -389,18 +410,21 @@ const Sidebar = () => {
           <div className="mt-32 flex flex-col items-center space-y-6">
             <IconLink
               link={{ label: "Profile", href: "/profile", icon: User }}
-              isActive={isActive("/profile")}
+              panelKey="profile"
+              isActive={isActive("profile")}
             />
             {navigation.slice(0, 3).map((item) => (
               <IconLink
                 key={item.label}
                 link={item}
-                isActive={isActive(item.href)}
+                panelKey={item.panelKey}
+                isActive={isActive(item.panelKey)}
               />
             ))}
             <IconLink
               link={navigation.find((item) => item.label === "Settings")}
-              isActive={isActive("/settings")}
+              panelKey="settings"
+              isActive={isActive("settings")}
             />
           </div>
 
@@ -418,46 +442,46 @@ const Sidebar = () => {
         {/* Mobile Bottom Navigation */}
         <div className="md:hidden flex items-center justify-between w-full px-4">
           {/* Profile Icon */}
-          <Link
-            to="/profile"
+          <button
+            onClick={() => setActivePanel("profile")}
             className={cn(
               "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
-              isActive("/profile")
+              isActive("profile")
                 ? "bg-black text-white"
                 : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             )}
           >
             <User className="w-5 h-5" />
-          </Link>
+          </button>
 
           {/* Main Navigation Icons */}
           {navigation.slice(0, 3).map((item) => (
-            <Link
+            <button
               key={item.label}
-              to={item.href}
+              onClick={() => setActivePanel(item.panelKey)}
               className={cn(
                 "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
-                isActive(item.href)
+                isActive(item.panelKey)
                   ? "bg-black text-white"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               )}
             >
               <item.icon className="w-5 h-5" />
-            </Link>
+            </button>
           ))}
 
           {/* Settings */}
-          <Link
-            to="/settings"
+          <button
+            onClick={() => setActivePanel("settings")}
             className={cn(
               "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
-              isActive("/settings")
+              isActive("settings")
                 ? "bg-black text-white"
                 : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             )}
           >
             <Settings className="w-5 h-5" />
-          </Link>
+          </button>
 
           {/* User Avatar */}
           <MobileUserProfile />

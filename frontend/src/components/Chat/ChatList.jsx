@@ -78,7 +78,7 @@ const ChatList = () => {
                           .toUpperCase()}`;
                       }}
                     />
-                    {/* Online indicator - you can add online status logic later */}
+                    {/* Online indicator - add online status logic later */}
                     <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
 
@@ -89,7 +89,7 @@ const ChatList = () => {
                         {user.username}
                       </h3>
                       <span className="text-xs text-gray-500">
-                        {/* You can add last message time here later */}
+                        {/* add last message time here later */}
                         Online
                       </span>
                     </div>

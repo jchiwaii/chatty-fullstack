@@ -1,9 +1,10 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { LayoutProvider } from "./store/useLayout.jsx";
 import Homepage from "./pages/Homepage";
 import Loginpage from "./pages/Loginpage";
 import Signuppage from "./pages/Signuppage";
-import ProfilePage from "./pages/ProfilePage";
+import Profilepage from "./pages/Profilepage";
 import Settingspage from "./pages/Settingspage";
 import { useEffect } from "react";
 import { useAuth } from "./store/useAuth";
@@ -26,28 +27,30 @@ const App = () => {
   }
   return (
     <>
-      <Routes>
-        <Route
-          path="/"
-          element={authUser ? <Homepage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/login"
-          element={!authUser ? <Loginpage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/signup"
-          element={!authUser ? <Signuppage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/profile"
-          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/settings"
-          element={authUser ? <Settingspage /> : <Navigate to="/login" />}
-        />
-      </Routes>
+      <LayoutProvider>
+        <Routes>
+          <Route
+            path="/"
+            element={authUser ? <Homepage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/login"
+            element={!authUser ? <Loginpage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/signup"
+            element={!authUser ? <Signuppage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/profile"
+            element={authUser ? <Profilepage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/settings"
+            element={authUser ? <Settingspage /> : <Navigate to="/login" />}
+          />
+        </Routes>
+      </LayoutProvider>
       <Toaster />
     </>
   );
