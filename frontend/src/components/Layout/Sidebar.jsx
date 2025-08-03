@@ -415,49 +415,52 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* Mobile Bottom Navigation (No changes here) */}
-        <div className="md:hidden flex items-center justify-between w-full px-2">
-          {/* Main Navigation Icons */}
-          <div className="flex items-center space-x-4">
-            {navigation.slice(0, 3).map((item) => (
-              <Link
-                key={item.label}
-                to={item.href}
-                className={cn(
-                  "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
-                  isActive(item.href)
-                    ? "bg-black text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                )}
-              >
-                <item.icon className="w-5 h-5" />
-              </Link>
-            ))}
+        {/* Mobile Bottom Navigation */}
+        <div className="md:hidden flex items-center justify-between w-full px-4">
+          {/* Profile Icon */}
+          <Link
+            to="/profile"
+            className={cn(
+              "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
+              isActive("/profile")
+                ? "bg-black text-white"
+                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+            )}
+          >
+            <User className="w-5 h-5" />
+          </Link>
 
-            {/* Settings */}
+          {/* Main Navigation Icons */}
+          {navigation.slice(0, 3).map((item) => (
             <Link
-              to="/settings"
+              key={item.label}
+              to={item.href}
               className={cn(
                 "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
-                isActive("/settings")
+                isActive(item.href)
                   ? "bg-black text-white"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               )}
             >
-              <Settings className="w-5 h-5" />
+              <item.icon className="w-5 h-5" />
             </Link>
-          </div>
+          ))}
 
-          {/* User Controls */}
-          <div className="flex items-center space-x-3">
-            <button className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-gray-100 transition-all duration-200">
-              <Globe className="w-4 h-4" />
-            </button>
-            <button className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 hover:bg-gray-100 transition-all duration-200">
-              <Moon className="w-4 h-4" />
-            </button>
-            <MobileUserProfile />
-          </div>
+          {/* Settings */}
+          <Link
+            to="/settings"
+            className={cn(
+              "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200",
+              isActive("/settings")
+                ? "bg-black text-white"
+                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+            )}
+          >
+            <Settings className="w-5 h-5" />
+          </Link>
+
+          {/* User Avatar */}
+          <MobileUserProfile />
         </div>
       </SidebarBody>
     </SidebarProvider>
