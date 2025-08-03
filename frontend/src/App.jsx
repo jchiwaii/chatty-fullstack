@@ -3,13 +3,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Loginpage from "./pages/Loginpage";
 import Signuppage from "./pages/Signuppage";
-import Profilepage from "./pages/Profilepage";
+import ProfilePage from "./pages/ProfilePage";
 import Settingspage from "./pages/Settingspage";
 import { useEffect } from "react";
 import { useAuth } from "./store/useAuth";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
-import MainLayout from "./components/MainLayout";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuth();
@@ -30,15 +29,7 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={
-            authUser ? (
-              <MainLayout>
-                <Homepage />
-              </MainLayout>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={authUser ? <Homepage /> : <Navigate to="/login" />}
         />
         <Route
           path="/login"
@@ -50,23 +41,11 @@ const App = () => {
         />
         <Route
           path="/profile"
-          element={
-            authUser ? (
-              <MainLayout>
-                <Profilepage />
-              </MainLayout>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
         <Route
           path="/settings"
-          element={
-            <MainLayout>
-              <Settingspage />
-            </MainLayout>
-          }
+          element={authUser ? <Settingspage /> : <Navigate to="/login" />}
         />
       </Routes>
       <Toaster />
