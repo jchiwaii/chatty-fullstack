@@ -88,51 +88,7 @@ const Loginpage = () => {
 
   return (
     <div className="grid min-h-screen bg-black font-sans text-white lg:grid-cols-2">
-      {/* Left Column: Visuals */}
-      <div
-        className="relative hidden items-center justify-center p-8 lg:flex"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none'%3e%3ccircle cx='16' cy='16' r='1.5' fill='%2327272a'/%3e%3c/svg%3e")`,
-        }}
-      >
-        <div className="w-full max-w-lg space-y-6 rounded-2xl border border-zinc-800 bg-black/50 p-6 shadow-2xl backdrop-blur-lg">
-          <ChatBubble
-            avatar="https://randomuser.me/api/portraits/men/32.jpg"
-            name="Alex"
-            time="9:41 AM"
-            delay={1}
-          >
-            I have been trying to center a div for three hours.
-          </ChatBubble>
-          <ChatBubble
-            avatar="https://randomuser.me/api/portraits/women/44.jpg"
-            name="Brenda"
-            time="9:42 AM"
-            delay={3}
-            isCode
-          >
-            {`div {\n  margin: 0 auto;\n}`}
-          </ChatBubble>
-          <ChatBubble
-            avatar="https://randomuser.me/api/portraits/men/32.jpg"
-            name="Alex"
-            time="9:43 AM"
-            delay={5}
-          >
-            Doesn't work. I'm losing my mind.
-          </ChatBubble>
-          <ChatBubble
-            avatar="https://randomuser.me/api/portraits/women/44.jpg"
-            name="Brenda"
-            time="9:44 AM"
-            delay={7}
-          >
-            ...did you try adding `display: block;`?
-          </ChatBubble>
-        </div>
-      </div>
-
-      {/* Right Column: Form */}
+      {/* Left Column: Form */}
       <div className="flex items-center justify-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-6">
           <div className="text-center">
@@ -231,6 +187,50 @@ const Loginpage = () => {
               Sign Up
             </Link>
           </p>
+        </div>
+      </div>
+
+      {/* Right Column: Visuals */}
+      <div
+        className="relative hidden items-center justify-center p-8 lg:flex"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none'%3e%3ccircle cx='16' cy='16' r='1.5' fill='%2327272a'/%3e%3c/svg%3e")`,
+        }}
+      >
+        <div className="w-full max-w-lg space-y-6 rounded-2xl border border-zinc-800 bg-black/50 p-6 shadow-2xl backdrop-blur-lg">
+          <ChatBubble
+            avatar="https://randomuser.me/api/portraits/men/32.jpg"
+            name="Alex"
+            time="9:41 AM"
+            delay={1}
+          >
+            I have been trying to center a div for three hours.
+          </ChatBubble>
+          <ChatBubble
+            avatar="https://randomuser.me/api/portraits/women/44.jpg"
+            name="Brenda"
+            time="9:42 AM"
+            delay={3}
+            isCode
+          >
+            {`div {\n  margin: 0 auto;\n}`}
+          </ChatBubble>
+          <ChatBubble
+            avatar="https://randomuser.me/api/portraits/men/32.jpg"
+            name="Alex"
+            time="9:43 AM"
+            delay={5}
+          >
+            Doesn't work. I'm losing my mind.
+          </ChatBubble>
+          <ChatBubble
+            avatar="https://randomuser.me/api/portraits/women/44.jpg"
+            name="Brenda"
+            time="9:44 AM"
+            delay={7}
+          >
+            ...did you try adding `display: block;`?
+          </ChatBubble>
         </div>
       </div>
     </div>

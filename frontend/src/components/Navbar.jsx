@@ -2,7 +2,6 @@ import React from "react";
 import { useAuth } from "../store/useAuth";
 import {
   LogOut,
-  MessageSquare,
   User,
   Settings,
   Sun,
@@ -10,11 +9,11 @@ import {
   Users,
   MessagesSquare,
   BookUser,
-  Bot, // New icon for the logo
+  Bot, // Using Bot icon for the logo
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
-// A cleaner, more subtle NavLink component
+// NavLink with Vercel-style aesthetics
 const NavLink = ({ to, icon: Icon, text }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
@@ -25,13 +24,12 @@ const NavLink = ({ to, icon: Icon, text }) => {
         className={`flex h-12 w-12 items-center justify-center rounded-lg transition-colors duration-200
         ${
           isActive
-            ? "bg-pink-600 text-white" // Active state with new color
-            : "text-zinc-400 group-hover:bg-pink-500/20 group-hover:text-pink-400" // Hover state with new color
+            ? "bg-zinc-900 text-white" // Subtle active state
+            : "text-zinc-400 group-hover:bg-zinc-900 group-hover:text-white" // Clean hover state
         }`}
       >
         <Icon className="h-6 w-6" />
       </div>
-      {/* Tooltip styling updated for consistency */}
       <div
         className="absolute left-full ml-4 hidden whitespace-nowrap rounded-md border
                    border-zinc-800 bg-black px-2 py-1 text-sm font-medium
@@ -43,12 +41,13 @@ const NavLink = ({ to, icon: Icon, text }) => {
   );
 };
 
+// NavButton with consistent Vercel-style aesthetics
 const NavButton = ({ onClick, icon: Icon, text }) => {
   return (
     <button onClick={onClick} className="group relative flex justify-center">
       <div
         className="flex h-12 w-12 items-center justify-center rounded-lg text-zinc-400 transition-colors
-                   duration-200 group-hover:bg-pink-500/20 group-hover:text-pink-400"
+                   duration-200 group-hover:bg-zinc-900 group-hover:text-white"
       >
         <Icon className="h-6 w-6" />
       </div>
@@ -71,9 +70,9 @@ const Navbar = () => {
       {/* Logo */}
       <Link
         to="/"
-        className="flex h-12 w-12 items-center justify-center rounded-lg transition-colors hover:bg-pink-500/20"
+        className="flex h-12 w-12 items-center justify-center rounded-lg transition-colors hover:bg-zinc-900"
       >
-        <Bot className="h-7 w-7 text-pink-400" />
+        <Bot className="h-7 w-7 text-white" />
       </Link>
 
       {/* Main navigation links (centered) */}
@@ -87,8 +86,20 @@ const Navbar = () => {
 
       {/* Bottom section with actions and user info */}
       <div className="flex flex-col items-center gap-4">
-        <NavButton onClick={() => {}} icon={Globe} text="Change Language" />
-        <NavButton onClick={() => {}} icon={Sun} text="Toggle Theme" />
+        <NavButton
+          onClick={() => {
+            /* Add language logic */
+          }}
+          icon={Globe}
+          text="Change Language"
+        />
+        <NavButton
+          onClick={() => {
+            /* Add theme logic */
+          }}
+          icon={Sun}
+          text="Toggle Theme"
+        />
 
         {/* Divider */}
         <div className="my-2 h-px w-10 bg-zinc-800"></div>
@@ -99,6 +110,9 @@ const Navbar = () => {
             src={authUser?.profilePicture || "/avatar.png"}
             alt="User avatar"
             className="h-11 w-11 rounded-full object-cover"
+            onError={(e) => {
+              e.target.src = "https://placehold.co/44x44/18181b/ffffff?text=U";
+            }}
           />
           <button
             onClick={logout}
