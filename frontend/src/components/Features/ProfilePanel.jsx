@@ -6,10 +6,10 @@ const ProfilePanel = () => {
   const { authUser } = useAuth();
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-200">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900">Profile</h2>
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Profile</h2>
       </div>
 
       {/* Profile Content */}
@@ -28,36 +28,36 @@ const ProfilePanel = () => {
             />
             <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
           </div>
-          <h3 className="mt-4 text-lg font-semibold text-gray-900">
+          <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">
             {authUser?.username || "User"}
           </h3>
-          <p className="text-sm text-gray-500">Online</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200">Online</p>
         </div>
 
         {/* Profile Details */}
         <div className="space-y-4">
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-            <User className="w-5 h-5 text-gray-400" />
+          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-200">
+            <User className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             <div>
-              <p className="text-sm font-medium text-gray-900">Username</p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">Username</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                 {authUser?.username || "N/A"}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-            <Mail className="w-5 h-5 text-gray-400" />
+          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-200">
+            <Mail className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             <div>
-              <p className="text-sm font-medium text-gray-900">Email</p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">Email</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                 {authUser?.email || "N/A"}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-            <Calendar className="w-5 h-5 text-gray-400" />
+          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-200">
+            <Calendar className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             <div>
               <p className="text-sm font-medium text-gray-900">Member Since</p>
               <p className="text-sm text-gray-600">
@@ -77,19 +77,6 @@ const ProfilePanel = () => {
               <p className="text-sm text-green-600">Active</p>
             </div>
           </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mt-6 space-y-3">
-          <button className="w-full p-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
-            Edit Profile
-          </button>
-          <button className="w-full p-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
-            Privacy Settings
-          </button>
-          <button className="w-full p-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
-            Account Security
-          </button>
         </div>
       </div>
     </div>

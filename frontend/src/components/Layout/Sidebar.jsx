@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { useAuth } from "../../store/useAuth";
 import { useLayout } from "../../store/useLayout.jsx";
+import { useTheme } from "../../hooks/useTheme";
 import {
   MessageSquare,
   Users,
@@ -40,7 +41,7 @@ const cn = (...classes) => {
 const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
   const { authUser, logout } = useAuth();
   const { setActivePanel } = useLayout();
-  const [isDark, setIsDark] = useState(false);
+  const { theme, setTheme } = useTheme();
   const [language, setLanguage] = useState("EN");
   const dropdownRef = useRef(null);
 
@@ -64,8 +65,7 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
   if (!isOpen) return null;
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    // Add your theme toggle logic here
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   const handleLogout = () => {
@@ -77,14 +77,14 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
     <div
       ref={dropdownRef}
       className={cn(
-        "absolute bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-56 py-2",
+        "absolute bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-56 py-2 dark:bg-gray-800 dark:border-gray-700",
         position === "top"
           ? "bottom-full mb-2 left-full ml-2"
           : "bottom-full mb-2 right-0"
       )}
     >
       {/* User Info Section */}
-      <div className="px-4 py-3 border-b border-gray-100">
+      <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <img
             src={authUser?.profilePicture || "/avatar.png"}
@@ -95,10 +95,10 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
             }}
           />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">
+            <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-100">
               {authUser?.username || "User"}
             </p>
-            <p className="text-xs text-gray-500 truncate">
+            <p className="text-xs text-gray-500 truncate dark:text-gray-400">
               {authUser?.email || "user@example.com"}
             </p>
           </div>
@@ -140,12 +140,12 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
           className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
         >
           <div className="flex items-center gap-3">
-            {isDark ? (
+            {theme === 'dark' ? (
               <Sun className="w-4 h-4" />
             ) : (
               <Moon className="w-4 h-4" />
             )}
-            {isDark ? "Light Mode" : "Dark Mode"}
+            {theme === 'dark' ? "Light Mode" : "Dark Mode"}
           </div>
         </button>
 
@@ -220,7 +220,7 @@ const DesktopSidebar = ({ className, children, ...props }) => {
   return (
     <div
       className={cn(
-        "h-full px-3 py-4 hidden md:flex md:flex-col bg-white border-r border-gray-100 shrink-0 w-16",
+        "h-full px-3 py-4 hidden md:flex md:flex-col bg-white border-r border-gray-100 shrink-0 w-16 dark:bg-gray-900 dark:border-gray-800",
         className
       )}
       {...props}
@@ -233,7 +233,7 @@ const DesktopSidebar = ({ className, children, ...props }) => {
 // Mobile Bottom Navigation Component
 const MobileBottomNav = ({ children }) => {
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-2 z-50">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-2 z-50 dark:bg-gray-900 dark:border-gray-800">
       <div className="flex items-center justify-around">{children}</div>
     </div>
   );
@@ -282,20 +282,23 @@ const IconLink = ({ link, className, isActive, panelKey, ...props }) => {
 
 // Theme Toggle Component
 const ThemeToggle = () => {
-  const [isDark, setIsDark] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    // Add your theme toggle logic here
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
-    <Tooltip text={isDark ? "Light Mode" : "Dark Mode"}>
+    <Tooltip text={theme === "dark" ? "Light Mode" : "Dark Mode"}>
       <button
         onClick={toggleTheme}
-        className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200"
+        className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100"
       >
-        {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        {theme === "dark" ? (
+          <Sun className="w-5 h-5" />
+        ) : (
+          <Moon className="w-5 h-5" />
+        )}
       </button>
     </Tooltip>
   );

@@ -16,20 +16,20 @@ const ChatList = () => {
 
   if (isUsersLoading) {
     return (
-      <div className="h-full flex flex-col bg-white">
+      <div className="h-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-200">
         {/* Header */}
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Messages</h2>
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Messages</h2>
         </div>
 
         {/* Loading skeleton */}
         <div className="flex-1 overflow-y-auto p-4">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="flex items-center gap-3 p-4 animate-pulse">
-              <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+              <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full transition-colors duration-200"></div>
               <div className="flex-1">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2 transition-colors duration-200"></div>
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 transition-colors duration-200"></div>
               </div>
             </div>
           ))}
@@ -39,10 +39,10 @@ const ChatList = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-200">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900">Messages</h2>
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">Messages</h2>
       </div>
 
       {/* Chat List */}
@@ -54,14 +54,14 @@ const ChatList = () => {
             <p className="text-sm">Start by adding some friends to chat with</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-100 dark:divide-gray-700 transition-colors duration-200">
             {users.map((user) => (
               <div
                 key={user._id}
                 onClick={() => handleUserSelect(user)}
-                className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
+                className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors ${
                   selectedUser?._id === user._id
-                    ? "bg-gray-50 border-r-2 border-black"
+                    ? "bg-gray-50 dark:bg-gray-700 border-r-2 border-black dark:border-white"
                     : ""
                 }`}
               >
@@ -85,15 +85,15 @@ const ChatList = () => {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-gray-900 truncate">
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100 truncate transition-colors duration-200">
                         {user.username}
                       </h3>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200">
                         {/* add last message time here later */}
                         Online
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 truncate">
+                    <p className="text-sm text-gray-600 dark:text-gray-300 truncate transition-colors duration-200">
                       {user.email}
                     </p>
                   </div>

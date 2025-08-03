@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { LayoutProvider } from "./store/useLayout.jsx";
+import { ThemeProvider } from "./components/theme-provider";
 import Homepage from "./pages/Homepage";
 import Loginpage from "./pages/Loginpage";
 import Signuppage from "./pages/Signuppage";
@@ -26,7 +27,7 @@ const App = () => {
     );
   }
   return (
-    <>
+    <ThemeProvider defaultTheme="system" storageKey="chatty-ui-theme">
       <LayoutProvider>
         <Routes>
           <Route
@@ -52,7 +53,7 @@ const App = () => {
         </Routes>
       </LayoutProvider>
       <Toaster />
-    </>
+    </ThemeProvider>
   );
 };
 

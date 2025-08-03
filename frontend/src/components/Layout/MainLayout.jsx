@@ -29,13 +29,13 @@ const MainLayout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex pb-16 md:pb-0">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex pb-16 md:pb-0 transition-colors duration-200">
       {/* Icon Sidebar */}
       <Sidebar />
 
       {/* Dynamic Panel */}
       {activePanel && (
-        <div className="w-80 border-r border-gray-200 hidden md:block">
+        <div className="w-80 border-r border-gray-200 dark:border-gray-700 hidden md:block bg-white dark:bg-gray-800 transition-colors duration-200">
           {renderPanel()}
         </div>
       )}

@@ -45,19 +45,19 @@ const SettingsPanel = () => {
   const ToggleSwitch = ({ value, onChange, label, description }) => (
     <div className="flex items-start justify-between py-3">
       <div className="flex-1">
-        <span className="text-sm font-medium text-gray-900">{label}</span>
+        <span className="text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">{label}</span>
         {description && (
-          <p className="text-xs text-gray-500 mt-1">{description}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors duration-200">{description}</p>
         )}
       </div>
       <button
         onClick={() => onChange(!value)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 ${
-          value ? "bg-black" : "bg-gray-200"
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
+          value ? "bg-black dark:bg-white" : "bg-gray-200 dark:bg-gray-600"
         }`}
       >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
+          className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-800 transition-transform shadow-sm ${
             value ? "translate-x-6" : "translate-x-1"
           }`}
         />
@@ -69,28 +69,28 @@ const SettingsPanel = () => {
     const isExpanded = expandedSection === sectionKey;
 
     return (
-      <div className="border-b border-gray-100 last:border-b-0">
+      <div className="border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors duration-200">
         <button
           onClick={() => toggleSection(sectionKey)}
-          className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors focus:outline-none focus:bg-gray-50"
+          className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-              <Icon className="w-4 h-4 text-gray-600" />
+            <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center transition-colors duration-200">
+              <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300 transition-colors duration-200" />
             </div>
-            <h3 className="font-semibold text-gray-900">{title}</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200">{title}</h3>
           </div>
           <div
             className={`transform transition-transform duration-200 ${
               isExpanded ? "rotate-180" : ""
             }`}
           >
-            <ChevronDown className="w-4 h-4 text-gray-400" />
+            <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500 transition-colors duration-200" />
           </div>
         </button>
 
         {isExpanded && (
-          <div className="px-4 pb-6 bg-gradient-to-b from-gray-50 to-white">
+          <div className="px-4 pb-6 bg-gradient-to-b from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 transition-colors duration-200">
             <div className="space-y-3 pt-2">{children}</div>
           </div>
         )}
@@ -99,22 +99,22 @@ const SettingsPanel = () => {
   };
 
   const InfoCard = ({ icon: Icon, label, value, action }) => (
-    <div className="bg-white rounded-xl p-4 border border-gray-100 hover:bg-gray-50 transition-colors">
+    <div className="bg-white dark:bg-gray-700 rounded-xl p-4 border border-gray-100 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-            <Icon className="w-4 h-4 text-gray-600" />
+          <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center transition-colors duration-200">
+            <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300 transition-colors duration-200" />
           </div>
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide transition-colors duration-200">
               {label}
             </p>
-            <p className="text-sm font-semibold text-gray-900 mt-1">{value}</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-1 transition-colors duration-200">{value}</p>
           </div>
         </div>
         {action && (
-          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <Edit3 className="w-4 h-4 text-gray-400" />
+          <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors">
+            <Edit3 className="w-4 h-4 text-gray-400 dark:text-gray-500 transition-colors duration-200" />
           </button>
         )}
       </div>
@@ -131,15 +131,15 @@ const SettingsPanel = () => {
     description,
     icon: Icon,
   }) => (
-    <div className="bg-white rounded-xl p-4 border border-gray-100">
+    <div className="bg-white dark:bg-gray-700 rounded-xl p-4 border border-gray-100 dark:border-gray-600 transition-colors duration-200">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-gray-600" />
+        <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center transition-colors duration-200">
+          <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300 transition-colors duration-200" />
         </div>
         <div className="flex-1">
-          <span className="text-sm font-medium text-gray-900">{label}</span>
+          <span className="text-sm font-medium text-gray-900 dark:text-gray-100 transition-colors duration-200">{label}</span>
           {description && (
-            <p className="text-xs text-gray-500 mt-1">{description}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors duration-200">{description}</p>
           )}
         </div>
       </div>
@@ -147,18 +147,18 @@ const SettingsPanel = () => {
       <div className="relative ml-11">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full text-left p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors flex items-center justify-between"
+          className="w-full text-left p-3 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors flex items-center justify-between"
         >
-          <span className="text-sm text-gray-700">{currentValue}</span>
+          <span className="text-sm text-gray-700 dark:text-gray-200 transition-colors duration-200">{currentValue}</span>
           <ChevronDown
-            className={`w-4 h-4 text-gray-400 transition-transform ${
+            className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform ${
               isOpen ? "rotate-180" : ""
             }`}
           />
         </button>
 
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg z-10">
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg z-10 transition-colors duration-200">
             {options.map((option) => (
               <button
                 key={option}
@@ -166,11 +166,11 @@ const SettingsPanel = () => {
                   setValue(option);
                   setIsOpen(false);
                 }}
-                className="w-full text-left p-3 hover:bg-gray-50 transition-colors flex items-center justify-between first:rounded-t-lg last:rounded-b-lg"
+                className="w-full text-left p-3 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-between first:rounded-t-lg last:rounded-b-lg"
               >
-                <span className="text-sm text-gray-700">{option}</span>
+                <span className="text-sm text-gray-700 dark:text-gray-200 transition-colors duration-200">{option}</span>
                 {currentValue === option && (
-                  <Check className="w-4 h-4 text-gray-600" />
+                  <Check className="w-4 h-4 text-gray-600 dark:text-gray-300 transition-colors duration-200" />
                 )}
               </button>
             ))}
@@ -230,9 +230,9 @@ const SettingsPanel = () => {
   );
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-200">
       {/* Enhanced Header with User Profile */}
-      <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 transition-colors duration-200">
         <div className="flex flex-col items-center text-center">
           <div className="relative mb-4">
             <img
@@ -270,17 +270,17 @@ const SettingsPanel = () => {
           sectionKey="personalInfo"
         >
           <div className="space-y-1">
-            <div className="p-3 hover:bg-gray-50 transition-colors rounded-lg flex items-center justify-between">
+            <div className="p-3 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors rounded-lg flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide transition-colors duration-200">
                   Name
                 </p>
-                <p className="text-sm font-semibold text-gray-900 mt-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-1 transition-colors duration-200">
                   {authUser?.username || "Patricia Smith"}
                 </p>
               </div>
-              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <Edit3 className="w-4 h-4 text-gray-400" />
+              <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-500 rounded-lg transition-colors">
+                <Edit3 className="w-4 h-4 text-gray-400 dark:text-gray-500 transition-colors duration-200" />
               </button>
             </div>
 
@@ -331,20 +331,20 @@ const SettingsPanel = () => {
                     onClick={() =>
                       setProfilePhotoDropdown(!profilePhotoDropdown)
                     }
-                    className="text-center p-2 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 min-w-[120px]"
+                    className="text-center p-2 bg-gray-50 dark:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors flex items-center justify-center gap-2 min-w-[120px]"
                   >
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-gray-200 transition-colors duration-200">
                       {profilePhotoSetting}
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 text-gray-400 transition-transform ${
+                      className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform ${
                         profilePhotoDropdown ? "rotate-180" : ""
                       }`}
                     />
                   </button>
 
                   {profilePhotoDropdown && (
-                    <div className="absolute top-full right-0 mt-1 bg-white border border-gray-200 rounded-lg z-10 min-w-[120px]">
+                    <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg z-10 min-w-[120px] transition-colors duration-200">
                       {["Everyone", "My Contacts", "Nobody"].map((option) => (
                         <button
                           key={option}
