@@ -3,7 +3,8 @@ import { MessageSquare, Users } from "lucide-react";
 import { useChat } from "../../store/useChat";
 
 const ChatList = () => {
-  const { users, getUsers, isUsersLoading, selectedUser, setSelectedUser } = useChat();
+  const { users, getUsers, isUsersLoading, selectedUser, setSelectedUser } =
+    useChat();
 
   useEffect(() => {
     getUsers();
@@ -20,7 +21,7 @@ const ChatList = () => {
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">Messages</h2>
         </div>
-        
+
         {/* Loading skeleton */}
         <div className="flex-1 overflow-y-auto p-4">
           {[...Array(5)].map((_, i) => (
@@ -59,7 +60,9 @@ const ChatList = () => {
                 key={user._id}
                 onClick={() => handleUserSelect(user)}
                 className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
-                  selectedUser?._id === user._id ? "bg-gray-50 border-r-2 border-black" : ""
+                  selectedUser?._id === user._id
+                    ? "bg-gray-50 border-r-2 border-black"
+                    : ""
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -70,7 +73,9 @@ const ChatList = () => {
                       alt={user.username}
                       className="w-12 h-12 rounded-full object-cover"
                       onError={(e) => {
-                        e.target.src = `https://placehold.co/48x48/f3f4f6/6b7280?text=${user.username.charAt(0).toUpperCase()}`;
+                        e.target.src = `https://placehold.co/48x48/f3f4f6/6b7280?text=${user.username
+                          .charAt(0)
+                          .toUpperCase()}`;
                       }}
                     />
                     {/* Online indicator - you can add online status logic later */}

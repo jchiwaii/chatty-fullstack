@@ -47,9 +47,13 @@ const ChatContainer = () => {
               message.sender === authUser._id ? "justify-end" : "justify-start"
             }`}
           >
-            <div className={`flex gap-3 max-w-xs lg:max-w-md ${
-              message.sender === authUser._id ? "flex-row-reverse" : "flex-row"
-            }`}>
+            <div
+              className={`flex gap-3 max-w-xs lg:max-w-md ${
+                message.sender === authUser._id
+                  ? "flex-row-reverse"
+                  : "flex-row"
+              }`}
+            >
               {/* Avatar */}
               <img
                 src={
@@ -60,20 +64,27 @@ const ChatContainer = () => {
                 alt="Avatar"
                 className="w-8 h-8 rounded-full object-cover"
                 onError={(e) => {
-                  const user = message.sender === authUser._id ? authUser : selectedUser;
-                  e.target.src = `https://placehold.co/32x32/f3f4f6/6b7280?text=${user.username?.charAt(0).toUpperCase() || 'U'}`;
+                  const user =
+                    message.sender === authUser._id ? authUser : selectedUser;
+                  e.target.src = `https://placehold.co/32x32/f3f4f6/6b7280?text=${
+                    user.username?.charAt(0).toUpperCase() || "U"
+                  }`;
                 }}
               />
-              
+
               {/* Message bubble */}
-              <div className={`flex flex-col ${
-                message.sender === authUser._id ? "items-end" : "items-start"
-              }`}>
-                <div className={`px-4 py-2 rounded-2xl ${
-                  message.sender === authUser._id
-                    ? "bg-black text-white rounded-br-sm"
-                    : "bg-gray-100 text-gray-900 rounded-bl-sm"
-                }`}>
+              <div
+                className={`flex flex-col ${
+                  message.sender === authUser._id ? "items-end" : "items-start"
+                }`}
+              >
+                <div
+                  className={`px-4 py-2 rounded-2xl ${
+                    message.sender === authUser._id
+                      ? "bg-black text-white rounded-br-sm"
+                      : "bg-gray-100 text-gray-900 rounded-bl-sm"
+                  }`}
+                >
                   {message.image && (
                     <img
                       src={message.image}
@@ -81,11 +92,9 @@ const ChatContainer = () => {
                       className="max-w-[200px] rounded-lg mb-2"
                     />
                   )}
-                  {message.text && (
-                    <p className="text-sm">{message.text}</p>
-                  )}
+                  {message.text && <p className="text-sm">{message.text}</p>}
                 </div>
-                
+
                 {/* Timestamp */}
                 <span className="text-xs text-gray-500 mt-1 px-2">
                   {formatMessageTime(message.createdAt)}

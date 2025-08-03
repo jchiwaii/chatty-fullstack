@@ -64,7 +64,9 @@ const ProfilePage = () => {
         <div className="w-full max-w-2xl bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-semibold text-gray-900">Profile</h1>
-            <p className="mt-2 text-gray-600">Manage your account information</p>
+            <p className="mt-2 text-gray-600">
+              Manage your account information
+            </p>
           </div>
 
           {/* Avatar upload section */}
@@ -75,7 +77,8 @@ const ProfilePage = () => {
                 alt="Profile"
                 className="w-32 h-32 rounded-full object-cover border-4 border-gray-100"
                 onError={(e) => {
-                  e.target.src = "https://placehold.co/128x128/f3f4f6/6b7280?text=U";
+                  e.target.src =
+                    "https://placehold.co/128x128/f3f4f6/6b7280?text=U";
                 }}
               />
               <label
@@ -127,11 +130,15 @@ const ProfilePage = () => {
 
           {/* Account Information */}
           <div className="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">Account Information</h2>
+            <h2 className="text-lg font-medium text-gray-900 mb-4">
+              Account Information
+            </h2>
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between py-2 border-b border-gray-200">
                 <span className="text-gray-600">Member Since</span>
-                <span className="text-gray-900">{authUser?.createdAt?.split("T")[0]}</span>
+                <span className="text-gray-900">
+                  {authUser?.createdAt?.split("T")[0]}
+                </span>
               </div>
               <div className="flex items-center justify-between py-2">
                 <span className="text-gray-600">Account Status</span>
