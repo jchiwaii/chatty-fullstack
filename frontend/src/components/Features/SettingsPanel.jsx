@@ -320,18 +320,18 @@ const SettingsPanel = () => {
           <div className="space-y-1">
             {/* Profile Photo Dropdown */}
             <div className="p-3 hover:bg-gray-50 transition-colors rounded-lg">
-              <div className="flex items-start justify-between">
+              <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <span className="text-sm font-medium text-gray-900">
                     Profile Photo
                   </span>
                 </div>
-                <div className="relative flex justify-center align-center">
+                <div className="relative">
                   <button
                     onClick={() =>
                       setProfilePhotoDropdown(!profilePhotoDropdown)
                     }
-                    className="text-left p-2 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors flex items-center gap-2 min-w-[120px]"
+                    className="text-center p-2 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 min-w-[120px]"
                   >
                     <span className="text-sm text-gray-700">
                       {profilePhotoSetting}
@@ -352,13 +352,13 @@ const SettingsPanel = () => {
                             setProfilePhotoSetting(option);
                             setProfilePhotoDropdown(false);
                           }}
-                          className="w-full text-left p-3 hover:bg-gray-50 transition-colors flex items-center justify-between first:rounded-t-lg last:rounded-b-lg"
+                          className="w-full text-center p-3 hover:bg-gray-50 transition-colors flex items-center justify-center first:rounded-t-lg last:rounded-b-lg"
                         >
                           <span className="text-sm text-gray-700">
                             {option}
                           </span>
                           {profilePhotoSetting === option && (
-                            <Check className="w-4 h-4 text-gray-600" />
+                            <Check className="w-4 h-4 text-gray-600 ml-2" />
                           )}
                         </button>
                       ))}
@@ -390,7 +390,7 @@ const SettingsPanel = () => {
 
             {/* Groups Dropdown */}
             <div className="p-3 hover:bg-gray-50 transition-colors rounded-lg">
-              <div className="flex items-start justify-between">
+              <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <span className="text-sm font-medium text-gray-900">
                     Groups
@@ -401,7 +401,7 @@ const SettingsPanel = () => {
                     onClick={() =>
                       setGroupPrivacyDropdown(!groupPrivacyDropdown)
                     }
-                    className="text-left p-2 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors flex items-center gap-2 min-w-[120px]"
+                    className="text-center p-2 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 min-w-[120px]"
                   >
                     <span className="text-sm text-gray-700">
                       {groupPrivacySetting}
@@ -422,13 +422,13 @@ const SettingsPanel = () => {
                             setGroupPrivacySetting(option);
                             setGroupPrivacyDropdown(false);
                           }}
-                          className="w-full text-left p-3 hover:bg-gray-50 transition-colors flex items-center justify-between first:rounded-t-lg last:rounded-b-lg"
+                          className="w-full text-center p-3 hover:bg-gray-50 transition-colors flex items-center justify-center first:rounded-t-lg last:rounded-b-lg"
                         >
                           <span className="text-sm text-gray-700">
                             {option}
                           </span>
                           {groupPrivacySetting === option && (
-                            <Check className="w-4 h-4 text-gray-600" />
+                            <Check className="w-4 h-4 text-gray-600 ml-2" />
                           )}
                         </button>
                       ))}
