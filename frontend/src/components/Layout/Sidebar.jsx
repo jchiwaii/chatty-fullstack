@@ -39,6 +39,7 @@ const cn = (...classes) => {
 // User Avatar Dropdown Modal Component
 const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
   const { authUser, logout } = useAuth();
+  const { setActivePanel } = useLayout();
   const [isDark, setIsDark] = useState(false);
   const [language, setLanguage] = useState("EN");
   const dropdownRef = useRef(null);
@@ -106,23 +107,27 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
 
       {/* Main Menu Items */}
       <div className="py-1">
-        <Link
-          to="/profile"
-          onClick={onClose}
-          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+        <button
+          onClick={() => {
+            setActivePanel("profile");
+            onClose();
+          }}
+          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left"
         >
           <User className="w-4 h-4" />
           Profile
-        </Link>
+        </button>
 
-        <Link
-          to="/settings"
-          onClick={onClose}
-          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+        <button
+          onClick={() => {
+            setActivePanel("settings");
+            onClose();
+          }}
+          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left"
         >
           <Settings className="w-4 h-4" />
           Settings
-        </Link>
+        </button>
       </div>
 
       {/* Divider */}
