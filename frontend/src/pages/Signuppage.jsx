@@ -1,49 +1,59 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Eye, EyeOff, Github } from "lucide-react";
 import { useAuth } from "../store/useAuth";
+import GoogleIcon from "../components/GoogleIcon";
 import toast from "react-hot-toast";
 
-// You can create a reusable icon component for social logins
-const GitHubIcon = () => (
-  <svg
-    className="h-5 w-5 mr-2"
-    fill="currentColor"
-    viewBox="0 0 24 24"
-    aria-hidden="true"
+// Floating animation component
+const FloatingElement = ({ children, delay = 0, className = "" }) => (
+  <div
+    className={`animate-float ${className}`}
+    style={{
+      animationDelay: `${delay}s`,
+      animationDuration: "6s",
+      animationIterationCount: "infinite",
+    }}
   >
-    <path
-      fillRule="evenodd"
-      d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.65.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z"
-      clipRule="evenodd"
-    />
-  </svg>
+    {children}
+  </div>
 );
 
-// Mock Chat Bubble Component for the visual effect
+// Enhanced Chat Bubble Component
 const ChatBubble = ({ avatar, name, time, isCode, children, delay }) => (
   <div
-    className="flex animate-fade-in-up items-start gap-3"
-    style={{ animationDelay: `${delay * 100}ms` }}
+    className="flex items-start gap-3 opacity-0 animate-fade-in-up"
+    style={{
+      animationDelay: `${delay * 200}ms`,
+      animationFillMode: "forwards",
+    }}
   >
-    <img
-      src={avatar}
-      alt={name}
-      className="h-9 w-9 rounded-full object-cover"
-    />
-    <div className="flex-1">
-      <div className="flex items-baseline gap-2">
-        <span className="text-sm font-bold text-white">{name}</span>
-        <span className="text-xs text-zinc-400">{time}</span>
+    <div className="relative">
+      <img
+        src={avatar}
+        alt={name}
+        className="h-10 w-10 rounded-full object-cover ring-2 ring-zinc-800"
+        onError={(e) => {
+          e.target.src = `https://ui-avatars.com/api/?name=${name}&background=18181b&color=ffffff&size=40`;
+        }}
+      />
+      <div className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-green-500 ring-2 ring-black"></div>
+    </div>
+    <div className="flex-1 min-w-0">
+      <div className="flex items-baseline gap-2 mb-1">
+        <span className="text-sm font-semibold text-white">{name}</span>
+        <span className="text-xs text-zinc-500">{time}</span>
       </div>
       {isCode ? (
-        <div className="mt-1 overflow-x-auto rounded-lg bg-zinc-900 p-3 font-mono text-xs text-zinc-200">
-          <pre>
+        <div className="rounded-lg bg-gradient-to-br from-zinc-900 to-zinc-800 p-3 font-mono text-xs border border-zinc-700">
+          <pre className="text-zinc-200">
             <code>{children}</code>
           </pre>
         </div>
       ) : (
-        <p className="mt-1 text-sm text-zinc-300">{children}</p>
+        <div className="bg-zinc-800/50 rounded-lg px-3 py-2 backdrop-blur-sm border border-zinc-700/50">
+          <p className="text-sm text-zinc-200">{children}</p>
+        </div>
       )}
     </div>
   </div>
@@ -57,6 +67,7 @@ const SignupPage = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const { signup, isSigningup } = useAuth();
 
@@ -100,145 +111,269 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="grid min-h-screen bg-black font-sans text-white lg:grid-cols-2">
-      {/* Left Column: Visuals */}
-      <div
-        className="relative hidden items-center justify-center p-8 lg:flex"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none'%3e%3ccircle cx='16' cy='16' r='1.5' fill='%2327272a'/%3e%3c/svg%3e")`,
-        }}
-      >
-        <div className="w-full max-w-lg space-y-6 rounded-2xl border border-zinc-800 bg-black/50 p-6 shadow-2xl backdrop-blur-lg">
-          <ChatBubble
-            avatar="https://randomuser.me/api/portraits/women/21.jpg"
-            name="Elena"
-            time="2:30 PM"
-            delay={1}
-          >
-            Hey team, I'm stuck on this React hook. Any ideas?
-          </ChatBubble>
-          <ChatBubble
-            avatar="https://randomuser.me/api/portraits/men/12.jpg"
-            name="David"
-            time="2:31 PM"
-            delay={3}
-            isCode
-          >
-            {`useEffect(() => {\n  // your logic here\n}, [dependencies]);`}
-          </ChatBubble>
-          <ChatBubble
-            avatar="https://randomuser.me/api/portraits/women/25.jpg"
-            name="Maria"
-            time="2:32 PM"
-            delay={5}
-          >
-            Make sure your dependency array is correct! That usually gets me.
-          </ChatBubble>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black font-sans text-white">
+      <div className="grid min-h-screen lg:grid-cols-2">
+        {/* Left Column: Enhanced Visuals */}
+        <div className="relative hidden items-center justify-center p-8 lg:flex overflow-hidden">
+          {/* Animated background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-green-500/5"></div>
 
-      {/* Right Column: Form */}
-      <div className="flex items-center justify-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-6">
-          <div className="text-center">
-            <MessageSquare className="mx-auto h-10 w-auto text-zinc-500" />
-            <h2 className="mt-4 text-2xl font-medium tracking-tight">
-              Create an account
-            </h2>
-            <p className="mt-2 text-sm text-zinc-400">
-              Join the conversation and start collaborating.
+          {/* Floating particles */}
+          <FloatingElement
+            delay={0}
+            className="absolute top-20 left-20 w-1 h-1 bg-purple-400/40 rounded-full"
+          />
+          <FloatingElement
+            delay={1}
+            className="absolute top-40 right-32 w-2 h-2 bg-blue-400/30 rounded-full"
+          />
+          <FloatingElement
+            delay={2}
+            className="absolute bottom-40 left-32 w-1 h-1 bg-green-400/40 rounded-full"
+          />
+          <FloatingElement
+            delay={3}
+            className="absolute top-60 left-40 w-1 h-1 bg-pink-400/30 rounded-full"
+          />
+
+          {/* Chat interface mockup */}
+          <div className="w-full max-w-lg space-y-6 rounded-2xl border border-zinc-800/50 bg-black/30 backdrop-blur-xl p-8 shadow-2xl relative z-10">
+            <div className="flex items-center gap-3 pb-4 border-b border-zinc-800/50">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500/60"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500/60"></div>
+              </div>
+              <span className="text-zinc-400 text-sm ml-4">Team Chat</span>
+            </div>
+
+            <div className="space-y-4">
+              <ChatBubble
+                avatar="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face"
+                name="Elena"
+                time="3:30 PM"
+                delay={1}
+              >
+                Welcome to the team! 👋 Ready to build something amazing?
+              </ChatBubble>
+              <ChatBubble
+                avatar="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face"
+                name="David"
+                time="3:31 PM"
+                delay={2}
+                isCode
+              >
+                {`const welcome = () => {\n  console.log('Hello, world!');\n};`}
+              </ChatBubble>
+              <ChatBubble
+                avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face"
+                name="Maria"
+                time="3:32 PM"
+                delay={3}
+              >
+                Love the energy! Let's ship some code! 🚀
+              </ChatBubble>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Form */}
+        <div className="flex items-center justify-center p-6 sm:p-12 relative">
+          {/* Floating background elements */}
+          <FloatingElement
+            delay={0}
+            className="absolute top-20 left-10 w-2 h-2 bg-purple-500/20 rounded-full blur-sm"
+          />
+          <FloatingElement
+            delay={2}
+            className="absolute top-40 right-20 w-3 h-3 bg-blue-500/20 rounded-full blur-sm"
+          />
+          <FloatingElement
+            delay={4}
+            className="absolute bottom-32 left-16 w-1 h-1 bg-green-500/20 rounded-full blur-sm"
+          />
+
+          <div className="w-full max-w-md space-y-8 relative z-10">
+            <div className="text-center space-y-4">
+              <div className="relative inline-block">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
+                <MessageSquare className="relative mx-auto h-12 w-12 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
+                  Join the community
+                </h1>
+                <p className="mt-2 text-zinc-400">
+                  Create your account and start collaborating
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="firstName"
+                      className="block text-sm font-medium text-zinc-300 mb-2"
+                    >
+                      First name
+                    </label>
+                    <input
+                      id="firstName"
+                      type="text"
+                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                      placeholder="John"
+                      value={formData.firstName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, firstName: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="lastName"
+                      className="block text-sm font-medium text-zinc-300 mb-2"
+                    >
+                      Last name
+                    </label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                      placeholder="Doe"
+                      value={formData.lastName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, lastName: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium text-zinc-300 mb-2"
+                  >
+                    Username
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                    placeholder="johndoe"
+                    value={formData.username}
+                    onChange={(e) =>
+                      setFormData({ ...formData, username: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-zinc-300 mb-2"
+                  >
+                    Email address
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                    placeholder="john@example.com"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-zinc-300 mb-2"
+                  >
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 pr-12 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                      placeholder="Create a strong password"
+                      value={formData.password}
+                      onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                      }
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-zinc-400 hover:text-white transition-colors"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full flex justify-center items-center rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:from-purple-500 hover:to-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                disabled={isSigningup}
+              >
+                {isSigningup ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Creating account...
+                  </div>
+                ) : (
+                  "Create account"
+                )}
+              </button>
+            </form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-zinc-700/50" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="bg-gradient-to-br from-black via-zinc-900 to-black px-4 text-zinc-500">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button className="flex items-center justify-center gap-2 rounded-xl border border-zinc-700/50 bg-zinc-900/30 backdrop-blur-sm px-4 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-zinc-800/50 hover:border-zinc-600/50 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:ring-offset-2 focus:ring-offset-black">
+                <GoogleIcon className="h-4 w-4" />
+                Google
+              </button>
+              <button className="flex items-center justify-center gap-2 rounded-xl border border-zinc-700/50 bg-zinc-900/30 backdrop-blur-sm px-4 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-zinc-800/50 hover:border-zinc-600/50 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:ring-offset-2 focus:ring-offset-black">
+                <Github className="h-4 w-4" />
+                GitHub
+              </button>
+            </div>
+
+            <p className="text-center text-sm text-zinc-400">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-semibold text-purple-400 hover:text-purple-300 transition-colors"
+              >
+                Sign in
+              </Link>
             </p>
           </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex space-x-4">
-              <input
-                type="text"
-                placeholder="First Name"
-                required
-                className="w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm placeholder-zinc-500 transition-colors focus:border-zinc-400 focus:outline-none"
-                value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Last Name"
-                required
-                className="w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm placeholder-zinc-500 transition-colors focus:border-zinc-400 focus:outline-none"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-              />
-            </div>
-            <input
-              type="text"
-              placeholder="Username"
-              required
-              className="block w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm placeholder-zinc-500 transition-colors focus:border-zinc-400 focus:outline-none"
-              value={formData.username}
-              onChange={(e) =>
-                setFormData({ ...formData, username: e.target.value })
-              }
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              className="block w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm placeholder-zinc-500 transition-colors focus:border-zinc-400 focus:outline-none"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              className="block w-full rounded-md border border-zinc-800 bg-black px-3 py-2 text-sm placeholder-zinc-500 transition-colors focus:border-zinc-400 focus:outline-none"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-            <button
-              type="submit"
-              disabled={isSigningup}
-              className="w-full rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50"
-            >
-              {isSigningup ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                "Create Account"
-              )}
-            </button>
-          </form>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-zinc-800" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-black px-2 text-zinc-500">Or</span>
-            </div>
-          </div>
-
-          <button className="flex w-full items-center justify-center rounded-md border border-zinc-800 bg-transparent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:ring-offset-2 focus:ring-offset-black">
-            <GitHubIcon />
-            Continue with GitHub
-          </button>
-
-          <p className="mt-6 text-center text-sm text-zinc-400">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="font-medium text-white hover:underline"
-            >
-              Sign in
-            </Link>
-          </p>
         </div>
       </div>
     </div>
