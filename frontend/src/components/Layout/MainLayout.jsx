@@ -56,19 +56,19 @@ const MainLayout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-50 dark:from-zinc-900 dark:via-black dark:to-zinc-900 flex pb-16 md:pb-0 transition-all duration-300">
+    <div className="h-screen bg-white dark:bg-black flex overflow-hidden">
       {/* Icon Sidebar */}
       <Sidebar />
 
       {/* Dynamic Panel */}
       {activePanel && (
-        <div className="w-80 border-r border-zinc-200/50 dark:border-zinc-800/50 hidden md:block bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl transition-all duration-300">
+        <div className="w-80 border-r border-gray-200 dark:border-gray-800 hidden md:block bg-white dark:bg-black">
           {renderPanel()}
         </div>
       )}
 
       {/* Main Content */}
-      <MainContent>{children}</MainContent>
+      <div className="flex-1 flex flex-col min-w-0">{children}</div>
     </div>
   );
 };

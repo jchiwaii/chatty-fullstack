@@ -41,22 +41,22 @@ const ChatList = () => {
 
   if (isUsersLoading) {
     return (
-      <div className="h-full flex flex-col bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl">
+      <div className="h-full flex flex-col bg-white dark:bg-black">
         {/* Header */}
-        <div className="p-6 border-b border-zinc-200/50 dark:border-zinc-800/50">
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+          <h2 className="text-lg font-semibold text-black dark:text-white font-mono">
             Messages
           </h2>
         </div>
 
         {/* Loading skeleton */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="flex items-center gap-4 p-3 animate-pulse">
-              <div className="w-12 h-12 bg-zinc-200 dark:bg-zinc-700 rounded-full"></div>
+            <div key={i} className="flex items-center gap-3 p-3 animate-pulse">
+              <div className="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
               <div className="flex-1">
-                <div className="h-4 bg-zinc-200 dark:bg-zinc-700 rounded w-3/4 mb-2"></div>
-                <div className="h-3 bg-zinc-200 dark:bg-zinc-700 rounded w-1/2"></div>
+                <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-2"></div>
+                <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
               </div>
             </div>
           ))}
@@ -66,19 +66,19 @@ const ChatList = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl">
+    <div className="h-full flex flex-col bg-white dark:bg-black">
       {/* Header */}
-      <div className="p-6 border-b border-zinc-200/50 dark:border-zinc-800/50">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+          <h2 className="text-lg font-semibold text-black dark:text-white font-mono">
             Messages
           </h2>
-          <div className="flex gap-2">
-            <button className="p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all duration-200">
-              <Filter className="w-5 h-5" />
+          <div className="flex gap-1">
+            <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 rounded transition-all duration-200">
+              <Filter className="w-4 h-4" />
             </button>
-            <button className="p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all duration-200">
-              <Plus className="w-5 h-5" />
+            <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 rounded transition-all duration-200">
+              <Plus className="w-4 h-4" />
             </button>
           </div>
         </div>

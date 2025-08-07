@@ -15,11 +15,7 @@ const ChatHeader = () => {
   const isTyping = typingUsers.has(selectedUser?._id);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-4 border-b border-zinc-200/50 dark:border-zinc-800/50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl"
-    >
+    <div className="p-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {/* Avatar */}
@@ -124,7 +120,7 @@ const ChatHeader = () => {
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

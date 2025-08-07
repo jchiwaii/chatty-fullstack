@@ -16,12 +16,7 @@ const HomePage = () => {
 
   return (
     <MainLayout>
-      <div className="flex h-full">
-        {/* Main Chat Area */}
-        <div className="flex-1">
-          {!selectedUser ? <EmptyState /> : <ChatContainer />}
-        </div>
-      </div>
+      {!selectedUser ? <EmptyState /> : <ChatContainer />}
     </MainLayout>
   );
 };

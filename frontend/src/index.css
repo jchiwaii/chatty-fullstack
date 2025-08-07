@@ -2,13 +2,14 @@
 
 body {
   background-color: white;
-  color: rgb(17 24 39);
+  color: black;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
   transition: background-color 0.2s, color 0.2s;
 }
 
 .dark body {
-  background-color: rgb(17 24 39);
-  color: rgb(243 244 246);
+  background-color: black;
+  color: white;
 }
 
 #root {
@@ -17,7 +18,7 @@ body {
 }
 
 .dark #root {
-  background-color: rgb(17 24 39);
+  background-color: black;
 }
 
 /* Custom animations for login/signup pages */

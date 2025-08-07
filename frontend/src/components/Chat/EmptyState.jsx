@@ -41,7 +41,7 @@ const FloatingElement = ({ children, delay = 0, className = "" }) => (
 
 const EmptyState = () => {
   return (
-    <div className="h-full flex items-center justify-center bg-gradient-to-br from-white via-zinc-50/50 to-white dark:from-zinc-900 dark:via-black/50 dark:to-zinc-900 relative overflow-hidden">
+    <div className="h-full flex items-center justify-center bg-white dark:bg-black relative overflow-hidden">
       {/* Floating background elements */}
       <FloatingElement
         delay={0}

@@ -19,17 +19,18 @@ export const useAuth = create((set, get) => ({
       const res = await axios.get("/auth/check");
       set({ authUser: res.data, isCheckingAuth: false });
 
-      // Connect to socket if user is authenticated
+      // Note: WebSocket connection disabled for demo mode
+      // Uncomment below when backend server is available
+      /*
       if (res.data) {
         try {
           const { connectSocket } = useSocket.getState();
           connectSocket(res.data._id);
         } catch (error) {
-          console.log(
-            "Socket connection failed, continuing without real-time features"
-          );
+          console.log("Socket connection failed, continuing without real-time features");
         }
       }
+      */
     } catch (error) {
       console.error("Error checking auth:", error);
       set({ authUser: null, isCheckingAuth: false });

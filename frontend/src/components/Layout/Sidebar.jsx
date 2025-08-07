@@ -65,7 +65,7 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
   if (!isOpen) return null;
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   const handleLogout = () => {
@@ -140,12 +140,12 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
           className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
         >
           <div className="flex items-center gap-3">
-            {theme === 'dark' ? (
+            {theme === "dark" ? (
               <Sun className="w-4 h-4" />
             ) : (
               <Moon className="w-4 h-4" />
             )}
-            {theme === 'dark' ? "Light Mode" : "Dark Mode"}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
           </div>
         </button>
 
@@ -220,7 +220,7 @@ const DesktopSidebar = ({ className, children, ...props }) => {
   return (
     <div
       className={cn(
-        "h-full px-3 py-4 hidden md:flex md:flex-col bg-white border-r border-gray-100 shrink-0 w-16 dark:bg-gray-900 dark:border-gray-800",
+        "h-full px-3 py-6 hidden md:flex md:flex-col bg-white border-r border-gray-200 shrink-0 w-16 dark:bg-black dark:border-gray-800",
         className
       )}
       {...props}
@@ -233,7 +233,7 @@ const DesktopSidebar = ({ className, children, ...props }) => {
 // Mobile Bottom Navigation Component
 const MobileBottomNav = ({ children }) => {
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-2 z-50 dark:bg-gray-900 dark:border-gray-800">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 z-50 dark:bg-black dark:border-gray-800">
       <div className="flex items-center justify-around">{children}</div>
     </div>
   );
@@ -266,15 +266,15 @@ const IconLink = ({ link, className, isActive, panelKey, ...props }) => {
         to={link.href}
         onClick={handleClick}
         className={cn(
-          "flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 group",
+          "flex items-center justify-center w-10 h-10 rounded-md transition-all duration-200 group",
           isActive
-            ? "bg-black text-white"
-            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+            ? "bg-black text-white dark:bg-white dark:text-black"
+            : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-100",
           className
         )}
         {...props}
       >
-        <link.icon className="w-5 h-5" />
+        <link.icon className="w-4 h-4" />
       </Link>
     </Tooltip>
   );
@@ -406,16 +406,16 @@ const Sidebar = () => {
         {/* Desktop Sidebar */}
         <div className="hidden md:flex md:flex-col md:h-full w-full">
           {/* Logo Section - Top */}
-          <div className="flex flex-col items-center pt-4">
+          <div className="flex flex-col items-center">
             <Tooltip text="Chatty">
-              <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
-                <MessageSquare className="w-6 h-6 text-white" />
+              <div className="w-8 h-8 bg-black dark:bg-white rounded-md flex items-center justify-center">
+                <MessageSquare className="w-4 h-4 text-white dark:text-black" />
               </div>
             </Tooltip>
           </div>
 
           {/* Top Navigation Icons: Profile, Chats, Groups, Contacts, Settings */}
-          <div className="mt-32 flex flex-col items-center space-y-6">
+          <div className="mt-8 flex flex-col items-center space-y-4">
             <IconLink
               link={{ label: "Profile", href: "/profile", icon: User }}
               panelKey="profile"
@@ -440,7 +440,7 @@ const Sidebar = () => {
           <div className="flex-1" />
 
           {/* Bottom Section: Language, Theme, Avatar */}
-          <div className=" mt-32 flex flex-col items-center space-y-4 pb-4">
+          <div className="flex flex-col items-center space-y-4">
             <LanguageToggle />
             <ThemeToggle />
             <UserProfile />

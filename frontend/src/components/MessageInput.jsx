@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useChat } from "../store/useChat";
 import { useSocket } from "../store/useSocket";
 import { Image, Send, X, Smile, Paperclip, Mic } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 
 const MessageInput = () => {
@@ -135,7 +135,7 @@ const MessageInput = () => {
   ];
 
   return (
-    <div className="p-4 border-t border-zinc-200/50 dark:border-zinc-800/50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl">
+    <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
       {/* Image Preview */}
       <AnimatePresence>
         {imagePreview && (
