@@ -44,9 +44,7 @@ const ChatList = () => {
       <div className="h-full flex flex-col bg-white dark:bg-black">
         {/* Header */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-          <h2 className="text-lg font-semibold text-black dark:text-white font-mono">
-            Messages
-          </h2>
+          <h2 className="text-h2 text-black dark:text-white">Messages</h2>
         </div>
 
         {/* Loading skeleton */}
@@ -70,9 +68,7 @@ const ChatList = () => {
       {/* Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-black dark:text-white font-mono">
-            Messages
-          </h2>
+          <h2 className="text-h2 text-black dark:text-white">Messages</h2>
           <div className="flex gap-1">
             <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 rounded transition-all duration-200">
               <Filter className="w-4 h-4" />
