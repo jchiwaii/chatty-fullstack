@@ -1,12 +1,20 @@
 @import "tailwindcss";
 
+/* Base styles */
+html {
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+}
+
 body {
   background-color: white;
   color: black;
   font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
   transition: background-color 0.2s, color 0.2s;
+  margin: 0;
+  padding: 0;
 }
 
+/* Dark mode styles */
 .dark body {
   background-color: black;
   color: white;
@@ -15,36 +23,46 @@ body {
 #root {
   min-height: 100vh;
   background-color: white;
+  transition: background-color 0.2s;
 }
 
 .dark #root {
   background-color: black;
 }
 
-/* Typography Hierarchy */
-.text-h1 {
-  font-size: 1.5rem; /* 24px */
-  font-weight: 600;
-  line-height: 1.2;
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+/* Ensure dark mode works at the highest level */
+html.dark {
+  color-scheme: dark;
 }
 
-.text-h2 {
-  font-size: 1.25rem; /* 20px */
+html.light {
+  color-scheme: light;
+}
+
+/* Typography Hierarchy */
+.text-h1 {
+  font-size: 1.125rem; /* 18px */
   font-weight: 600;
   line-height: 1.3;
   font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
 }
 
+.text-h2 {
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  line-height: 1.4;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+}
+
 .text-h3 {
-  font-size: 1.125rem; /* 18px */
+  font-size: 0.9375rem; /* 15px */
   font-weight: 500;
   line-height: 1.4;
   font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
 }
 
 .text-body {
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.8125rem; /* 13px */
   font-weight: 400;
   line-height: 1.5;
   font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;

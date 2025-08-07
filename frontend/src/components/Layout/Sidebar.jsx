@@ -65,7 +65,9 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
   if (!isOpen) return null;
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    const newTheme = theme === "dark" ? "light" : "dark";
+    console.log("Sidebar dropdown toggle:", theme, "->", newTheme);
+    setTheme(newTheme);
   };
 
   const handleLogout = () => {

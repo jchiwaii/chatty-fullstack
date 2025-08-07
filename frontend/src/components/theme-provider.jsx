@@ -9,33 +9,50 @@ export function ThemeProvider({
 }) {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem(storageKey) || defaultTheme;
+      const stored = localStorage.getItem(storageKey);
+      console.log(
+        "Initial theme from storage:",
+        stored,
+        "default:",
+        defaultTheme
+      );
+      return stored || defaultTheme;
     }
     return defaultTheme;
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
+    const body = window.document.body;
 
-    // Remove any existing theme classes
+    console.log("Applying theme:", theme);
+
+    // Remove any existing theme classes from both html and body
     root.classList.remove("light", "dark");
+    body.classList.remove("light", "dark");
+
+    let appliedTheme = theme;
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
+      appliedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
-
-      root.classList.add(systemTheme);
-      return;
+      console.log("Applied system theme:", appliedTheme);
     }
 
-    root.classList.add(theme);
+    // Apply theme to both html and body elements
+    root.classList.add(appliedTheme);
+    body.classList.add(appliedTheme);
+
+    console.log("Applied theme class:", appliedTheme);
+    console.log("HTML classes:", root.className);
+    console.log("Body classes:", body.className);
   }, [theme]);
 
   const value = {
     theme,
     setTheme: (newTheme) => {
+      console.log("Setting theme to:", newTheme);
       localStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
     },

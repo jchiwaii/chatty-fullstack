@@ -87,6 +87,9 @@ const SettingsPanel = () => {
       {/* Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <h2 className="text-h2 text-black dark:text-white">Settings</h2>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          Current theme: {theme}
+        </p>
       </div>
 
       {/* Settings Content */}
@@ -150,7 +153,15 @@ const SettingsPanel = () => {
           <div className="space-y-1 pt-3">
             <ToggleSwitch
               value={theme === "dark"}
-              onChange={(isDark) => setTheme(isDark ? "dark" : "light")}
+              onChange={(isDark) => {
+                console.log(
+                  "Settings toggle:",
+                  isDark,
+                  "current theme:",
+                  theme
+                );
+                setTheme(isDark ? "dark" : "light");
+              }}
               label="Dark Mode"
               description="Use dark theme for the interface"
             />
