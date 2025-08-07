@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useSocket } from "./useSocket";
 
 axios.defaults.baseURL = "http://localhost:3000/api";
 axios.defaults.withCredentials = true;
 
-export const useAuth = create((set) => ({
+export const useAuth = create((set, get) => ({
   authUser: null,
   isSigningup: false,
   isLoggingin: false,
@@ -17,6 +18,18 @@ export const useAuth = create((set) => ({
     try {
       const res = await axios.get("/auth/check");
       set({ authUser: res.data, isCheckingAuth: false });
+
+      // Connect to socket if user is authenticated
+      if (res.data) {
+        try {
+          const { connectSocket } = useSocket.getState();
+          connectSocket(res.data._id);
+        } catch (error) {
+          console.log(
+            "Socket connection failed, continuing without real-time features"
+          );
+        }
+      }
     } catch (error) {
       console.error("Error checking auth:", error);
       set({ authUser: null, isCheckingAuth: false });
@@ -38,6 +51,11 @@ export const useAuth = create((set) => ({
   logout: async () => {
     try {
       await axios.post("/auth/logout");
+
+      // Disconnect socket before logout
+      const { disconnectSocket } = useSocket.getState();
+      disconnectSocket();
+
       set({ authUser: null });
       toast.success("Logged out successfully");
     } catch (error) {
@@ -50,12 +68,23 @@ export const useAuth = create((set) => ({
     try {
       const res = await axios.post("/auth/login", formData);
       set({ authUser: res.data, isLoggingin: false });
-      toast.success("Logged in successfully!"); // Handle success here
+
+      // Connect to socket after successful login
+      try {
+        const { connectSocket } = useSocket.getState();
+        connectSocket(res.data._id);
+      } catch (error) {
+        console.log(
+          "Socket connection failed, continuing without real-time features"
+        );
+      }
+
+      toast.success("Logged in successfully!");
     } catch (error) {
       console.error("Error logging in:", error);
       set({ isLoggingin: false });
-      toast.error(error.response?.data?.message || "Login failed"); // Handle error here
-      throw error; // Re-throw so the component knows it failed
+      toast.error(error.response?.data?.message || "Login failed");
+      throw error;
     }
   },
   googleSignIn: async (token) => {
@@ -63,6 +92,17 @@ export const useAuth = create((set) => ({
     try {
       const res = await axios.post("/auth/google", { token });
       set({ authUser: res.data, isLoggingin: false });
+
+      // Connect to socket after successful Google login
+      try {
+        const { connectSocket } = useSocket.getState();
+        connectSocket(res.data._id);
+      } catch (error) {
+        console.log(
+          "Socket connection failed, continuing without real-time features"
+        );
+      }
+
       toast.success("Logged in successfully!");
     } catch (error) {
       console.error("Error logging in with Google:", error);
