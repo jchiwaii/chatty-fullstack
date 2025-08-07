@@ -42,7 +42,7 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
   const { authUser, logout } = useAuth();
   const { setActivePanel } = useLayout();
   const { theme, setTheme } = useTheme();
-  const [language, setLanguage] = useState("EN");
+
   const dropdownRef = useRef(null);
 
   // Close dropdown when clicking outside
@@ -77,28 +77,30 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
     <div
       ref={dropdownRef}
       className={cn(
-        "absolute bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-56 py-2 dark:bg-gray-800 dark:border-gray-700",
+        "absolute bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded shadow-lg z-50 w-48 py-2",
         position === "top"
           ? "bottom-full mb-2 left-full ml-2"
           : "bottom-full mb-2 right-0"
       )}
     >
       {/* User Info Section */}
-      <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+      <div className="px-3 py-3 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-3">
           <img
             src={authUser?.profilePicture || "/avatar.png"}
             alt="Profile"
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-8 h-8 rounded-full object-cover"
             onError={(e) => {
-              e.target.src = "https://placehold.co/40x40/f3f4f6/6b7280?text=U";
+              e.target.src = `https://ui-avatars.com/api/?name=${
+                authUser?.username || "U"
+              }&background=000000&color=ffffff&size=32`;
             }}
           />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-100">
+            <p className="text-small text-black dark:text-white font-medium truncate">
               {authUser?.username || "User"}
             </p>
-            <p className="text-xs text-gray-500 truncate dark:text-gray-400">
+            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
               {authUser?.email || "user@example.com"}
             </p>
           </div>
@@ -112,7 +114,7 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
             setActivePanel("profile");
             onClose();
           }}
-          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left"
+          className="flex items-center gap-3 w-full px-3 py-2 text-body text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors text-left"
         >
           <User className="w-4 h-4" />
           Profile
@@ -123,7 +125,7 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
             setActivePanel("settings");
             onClose();
           }}
-          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left"
+          className="flex items-center gap-3 w-full px-3 py-2 text-body text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors text-left"
         >
           <Settings className="w-4 h-4" />
           Settings
@@ -131,44 +133,34 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-100 my-1"></div>
+      <div className="border-t border-gray-200 dark:border-gray-800 my-1"></div>
 
-      {/* Theme and Language Controls */}
+      {/* Theme Control */}
       <div className="py-1">
         <button
           onClick={toggleTheme}
-          className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2 text-body text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors"
         >
-          <div className="flex items-center gap-3">
-            {theme === "dark" ? (
-              <Sun className="w-4 h-4" />
-            ) : (
-              <Moon className="w-4 h-4" />
-            )}
-            {theme === "dark" ? "Light Mode" : "Dark Mode"}
-          </div>
-        </button>
-
-        <button className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-          <div className="flex items-center gap-3">
-            <Globe className="w-4 h-4" />
-            Language
-          </div>
-          <span className="text-xs text-gray-500">{language}</span>
+          {theme === "dark" ? (
+            <Sun className="w-4 h-4" />
+          ) : (
+            <Moon className="w-4 h-4" />
+          )}
+          {theme === "dark" ? "Light Mode" : "Dark Mode"}
         </button>
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-100 my-1"></div>
+      <div className="border-t border-gray-200 dark:border-gray-800 my-1"></div>
 
       {/* Logout */}
       <div className="py-1">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2 text-body text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors"
         >
           <LogOut className="w-4 h-4" />
-          Logout
+          Sign Out
         </button>
       </div>
     </div>
@@ -292,12 +284,12 @@ const ThemeToggle = () => {
     <Tooltip text={theme === "dark" ? "Light Mode" : "Dark Mode"}>
       <button
         onClick={toggleTheme}
-        className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100"
+        className="flex items-center justify-center w-10 h-10 rounded-md text-gray-500 hover:bg-gray-100 hover:text-black dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-white transition-all duration-200"
       >
         {theme === "dark" ? (
-          <Sun className="w-5 h-5" />
+          <Sun className="w-4 h-4" />
         ) : (
-          <Moon className="w-5 h-5" />
+          <Moon className="w-4 h-4" />
         )}
       </button>
     </Tooltip>

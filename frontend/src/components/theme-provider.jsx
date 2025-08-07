@@ -1,54 +1,49 @@
-import { useEffect, useState } from "react"
-import { ThemeProviderContext } from "../contexts/ThemeContext"
+import { useEffect, useState } from "react";
+import { ThemeProviderContext } from "../contexts/ThemeContext";
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  defaultTheme = "light",
   storageKey = "chatty-theme",
   ...props
 }) {
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem(storageKey) || defaultTheme
-  )
-
-  const [resolvedTheme, setResolvedTheme] = useState("light")
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(storageKey) || defaultTheme;
+    }
+    return defaultTheme;
+  });
 
   useEffect(() => {
-    const root = window.document.documentElement
+    const root = window.document.documentElement;
 
     // Remove any existing theme classes
-    root.classList.remove("light", "dark")
+    root.classList.remove("light", "dark");
 
     if (theme === "system") {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
         .matches
         ? "dark"
-        : "light"
+        : "light";
 
-      if (systemTheme === "dark") {
-        root.classList.add("dark")
-      }
-      setResolvedTheme(systemTheme)
-      return
+      root.classList.add(systemTheme);
+      return;
     }
 
-    if (theme === "dark") {
-      root.classList.add("dark")
-    }
-    setResolvedTheme(theme)
-  }, [theme])
+    root.classList.add(theme);
+  }, [theme]);
 
   const value = {
-    theme: resolvedTheme,
+    theme,
     setTheme: (newTheme) => {
-      localStorage.setItem(storageKey, newTheme)
-      setTheme(newTheme)
+      localStorage.setItem(storageKey, newTheme);
+      setTheme(newTheme);
     },
-  }
+  };
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
       {children}
     </ThemeProviderContext.Provider>
-  )
+  );
 }

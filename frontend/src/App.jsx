@@ -27,7 +27,7 @@ const App = () => {
     );
   }
   return (
-    <ThemeProvider defaultTheme="system" storageKey="chatty-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="chatty-ui-theme">
       <LayoutProvider>
         <Routes>
           <Route

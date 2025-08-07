@@ -12,14 +12,15 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../../store/useAuth";
+import { useTheme } from "../../hooks/useTheme";
 
 const SettingsPanel = () => {
   const { authUser, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
   const [expandedSection, setExpandedSection] = useState(null);
 
   // Toggle states
   const [notifications, setNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
   const [readReceipts, setReadReceipts] = useState(true);
 
   const toggleSection = (section) => {
@@ -148,8 +149,8 @@ const SettingsPanel = () => {
         <SettingSection icon={Moon} title="Appearance" sectionKey="appearance">
           <div className="space-y-1 pt-3">
             <ToggleSwitch
-              value={darkMode}
-              onChange={setDarkMode}
+              value={theme === "dark"}
+              onChange={(isDark) => setTheme(isDark ? "dark" : "light")}
               label="Dark Mode"
               description="Use dark theme for the interface"
             />
