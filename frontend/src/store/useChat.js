@@ -43,7 +43,11 @@ export const useChat = create((set, get) => ({
   },
 
   setSelectedUser: (user) => {
-    set({ selectedUser: user });
+    const { getMessages } = get();
+    set({ selectedUser: user, messages: [] });
+    if (user) {
+      getMessages(user._id);
+    }
     // Clear typing indicators when switching users
     set({ typingUsers: new Set() });
   },
