@@ -14,7 +14,7 @@ export const useSocket = create((set, get) => ({
 
     try {
       const newSocket = io(
-        import.meta.env.VITE_BASE_URL || "http://localhost:3000",
+        import.meta.env.VITE_REACT_APP_BACKEND_URL || "http://localhost:3000",
         {
           query: { userId },
           transports: ["websocket"],

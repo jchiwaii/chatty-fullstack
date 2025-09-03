@@ -90,8 +90,8 @@ const Loginpage = () => {
     try {
       await login(formData);
     } catch (error) {
+      // The login function in the auth store is expected to show a toast on error.
       console.error("Login error:", error);
-      toast.error("An error occurred during login.");
     }
   };
 

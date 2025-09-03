@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSocket } from "./useSocket";
 
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL = `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api`;
 axios.defaults.withCredentials = true;
 
 export const useAuth = create((set, get) => ({
