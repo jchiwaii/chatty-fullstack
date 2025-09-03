@@ -15,10 +15,14 @@ export const useChat = create((set, get) => ({
     set({ isUsersLoading: true });
     try {
       const res = await axiosInstance.get("/messages/users");
-      set({ users: res.data, isUsersLoading: false });
+      if (Array.isArray(res.data)) {
+        set({ users: res.data, isUsersLoading: false });
+      } else {
+        set({ users: [], isUsersLoading: false });
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
-      set({ isUsersLoading: false });
+      set({ users: [], isUsersLoading: false });
       toast.error("Failed to load users");
     }
   },
@@ -27,7 +31,11 @@ export const useChat = create((set, get) => ({
     set({ isLoadingMessages: true });
     try {
       const res = await axiosInstance.get(`/messages/${userId}`);
-      set({ messages: res.data, isLoadingMessages: false });
+      if (Array.isArray(res.data)) {
+        set({ messages: res.data, isLoadingMessages: false });
+      } else {
+        set({ messages: [], isLoadingMessages: false });
+      }
 
       // Clear unread messages for this user
       const { unreadMessages } = get();
@@ -36,7 +44,7 @@ export const useChat = create((set, get) => ({
       set({ unreadMessages: newUnreadMessages });
     } catch (error) {
       console.error("Error fetching messages:", error);
-      set({ isLoadingMessages: false });
+      set({ messages: [], isLoadingMessages: false });
       toast.error("Failed to load messages");
     }
   },
