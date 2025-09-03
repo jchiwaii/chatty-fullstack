@@ -45,7 +45,12 @@ export const useAuth = create((set, get) => ({
     } catch (error) {
       console.error("Error signing up:", error);
       set({ isSigningup: false });
-      toast.error(error.response?.data?.message || "Signup failed"); // Handle error here
+      const message = error.response?.data?.message || "Signup failed";
+      if (message.includes("email")) {
+        toast.error("Signup failed");
+      } else {
+        toast.error(message);
+      }
       throw error; // Re-throw so the component knows it failed
     }
   },
