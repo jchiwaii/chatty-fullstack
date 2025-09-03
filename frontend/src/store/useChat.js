@@ -1,7 +1,6 @@
 import toast from "react-hot-toast";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
-import { useSocket } from "./useSocket";
 
 export const useChat = create((set, get) => ({
   messages: [],
@@ -44,9 +43,13 @@ export const useChat = create((set, get) => ({
 
   setSelectedUser: (user) => {
     const { getMessages } = get();
-    set({ selectedUser: user, messages: [] });
+    set({ selectedUser: user });
     if (user) {
+      // Only clear messages after starting to load new ones
+      set({ messages: [], isLoadingMessages: true });
       getMessages(user._id);
+    } else {
+      set({ messages: [] });
     }
     // Clear typing indicators when switching users
     set({ typingUsers: new Set() });

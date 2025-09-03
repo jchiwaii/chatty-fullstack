@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { useChat } from "../store/useChat";
 import { useSocket } from "../store/useSocket";
-import { Image, Send, X, Smile, Paperclip, Mic } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
+import { Image, Send, X, Smile, Paperclip } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 
 const MessageInput = () => {
@@ -214,7 +214,7 @@ const MessageInput = () => {
               placeholder="Type a message..."
               value={text}
               onChange={(e) => setText(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
               rows={1}
             />
 

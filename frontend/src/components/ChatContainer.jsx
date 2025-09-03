@@ -7,7 +7,7 @@ import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuth } from "../store/useAuth";
 import { formatMessageTime } from "../lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CheckCheck, Clock } from "lucide-react";
+import { Check, CheckCheck, Clock, MessageSquare } from "lucide-react";
 
 const TypingIndicator = ({ typingUsers, selectedUser }) => {
   const { authUser } = useAuth();
@@ -125,12 +125,13 @@ const ChatContainer = () => {
   const messagesContainerRef = useRef(null);
 
   useEffect(() => {
-    if (messageEndRef.current) {
+    if (messageEndRef.current && messages.length > 0) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  if (isLoadingMessages) {
+  // Show loading state only when we have a selected user but are loading messages
+  if (isLoadingMessages && selectedUser) {
     return (
       <div className="h-full flex flex-col bg-white dark:bg-black">
         <ChatHeader />
@@ -142,6 +143,11 @@ const ChatContainer = () => {
     );
   }
 
+  // If no selected user, this shouldn't render (EmptyState should show instead)
+  if (!selectedUser) {
+    return null;
+  }
+
   return (
     <div className="h-full flex flex-col bg-white dark:bg-black">
       <ChatHeader />
@@ -151,22 +157,34 @@ const ChatContainer = () => {
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700 scrollbar-track-transparent"
       >
-        <AnimatePresence>
-          {messages.map((message, index) => {
-            const isOwn = message.sender === authUser._id;
-            const user = isOwn ? authUser : selectedUser;
+        {messages.length === 0 && !isLoadingMessages ? (
+          <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-gray-400">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+              <MessageSquare className="w-8 h-8" />
+            </div>
+            <p className="text-lg font-medium mb-2">No messages yet</p>
+            <p className="text-sm text-center">
+              Start the conversation with {selectedUser?.username}
+            </p>
+          </div>
+        ) : (
+          <AnimatePresence>
+            {messages.map((message, index) => {
+              const isOwn = message.sender === authUser._id;
+              const user = isOwn ? authUser : selectedUser;
 
-            return (
-              <MessageBubble
-                key={message._id}
-                message={message}
-                isOwn={isOwn}
-                user={user}
-                authUser={authUser}
-              />
-            );
-          })}
-        </AnimatePresence>
+              return (
+                <MessageBubble
+                  key={message._id}
+                  message={message}
+                  isOwn={isOwn}
+                  user={user}
+                  authUser={authUser}
+                />
+              );
+            })}
+          </AnimatePresence>
+        )}
 
         {/* Typing Indicator */}
         <AnimatePresence>
