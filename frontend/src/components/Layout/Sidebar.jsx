@@ -18,6 +18,7 @@ import {
   Globe,
   Moon,
   Sun,
+  Monitor,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -64,10 +65,14 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
 
   if (!isOpen) return null;
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    console.log("Sidebar dropdown toggle:", theme, "->", newTheme);
-    setTheme(newTheme);
+  const cycleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else if (theme === "dark") {
+      setTheme("system");
+    } else {
+      setTheme("light");
+    }
   };
 
   const handleLogout = () => {
@@ -140,15 +145,13 @@ const UserDropdown = ({ isOpen, onClose, position = "top" }) => {
       {/* Theme Control */}
       <div className="py-1">
         <button
-          onClick={toggleTheme}
+          onClick={cycleTheme}
           className="flex items-center gap-3 w-full px-3 py-2 text-body text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors"
         >
-          {theme === "dark" ? (
-            <Sun className="w-4 h-4" />
-          ) : (
-            <Moon className="w-4 h-4" />
-          )}
-          {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          {theme === "light" && <Sun className="w-4 h-4" />}
+          {theme === "dark" && <Moon className="w-4 h-4" />}
+          {theme === "system" && <Monitor className="w-4 h-4" />}
+          <span>Theme: {theme.charAt(0).toUpperCase() + theme.slice(1)}</span>
         </button>
       </div>
 
@@ -278,21 +281,36 @@ const IconLink = ({ link, className, isActive, panelKey, ...props }) => {
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+  const cycleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else if (theme === "dark") {
+      setTheme("system");
+    } else {
+      setTheme("light");
+    }
   };
 
+  const themeIcon =
+    theme === "light" ? (
+      <Sun className="w-4 h-4" />
+    ) : theme === "dark" ? (
+      <Moon className="w-4 h-4" />
+    ) : (
+      <Monitor className="w-4 h-4" />
+    );
+
+  const themeTooltip = `Theme: ${
+    theme.charAt(0).toUpperCase() + theme.slice(1)
+  }`;
+
   return (
-    <Tooltip text={theme === "dark" ? "Light Mode" : "Dark Mode"}>
+    <Tooltip text={themeTooltip}>
       <button
-        onClick={toggleTheme}
+        onClick={cycleTheme}
         className="flex items-center justify-center w-10 h-10 rounded-md text-gray-500 hover:bg-gray-100 hover:text-black dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-white transition-all duration-200"
       >
-        {theme === "dark" ? (
-          <Sun className="w-4 h-4" />
-        ) : (
-          <Moon className="w-4 h-4" />
-        )}
+        {themeIcon}
       </button>
     </Tooltip>
   );

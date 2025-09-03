@@ -1,42 +1,10 @@
 @import "tailwindcss";
 
 /* Base styles */
-html {
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
-}
-
 body {
-  background-color: white;
-  color: black;
   font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+  @apply bg-white dark:bg-black text-black dark:text-white;
   transition: background-color 0.2s, color 0.2s;
-  margin: 0;
-  padding: 0;
-}
-
-/* Dark mode styles */
-.dark body {
-  background-color: black;
-  color: white;
-}
-
-#root {
-  min-height: 100vh;
-  background-color: white;
-  transition: background-color 0.2s;
-}
-
-.dark #root {
-  background-color: black;
-}
-
-/* Ensure dark mode works at the highest level */
-html.dark {
-  color-scheme: dark;
-}
-
-html.light {
-  color-scheme: light;
 }
 
 /* Typography Hierarchy */

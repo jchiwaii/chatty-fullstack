@@ -21,39 +21,37 @@ const App = () => {
 
   if (isCheckingAuth && !authUser) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen bg-white dark:bg-black">
         <Loader className="size-10 animate-spin" />
       </div>
     );
   }
   return (
-    <ThemeProvider defaultTheme="light" storageKey="chatty-ui-theme">
-      <LayoutProvider>
-        <Routes>
-          <Route
-            path="/"
-            element={authUser ? <Homepage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/login"
-            element={!authUser ? <Loginpage /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/signup"
-            element={!authUser ? <Signuppage /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/profile"
-            element={authUser ? <Profilepage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/settings"
-            element={authUser ? <Settingspage /> : <Navigate to="/login" />}
-          />
-        </Routes>
-      </LayoutProvider>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={authUser ? <Homepage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/login"
+          element={!authUser ? <Loginpage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/signup"
+          element={!authUser ? <Signuppage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/profile"
+          element={authUser ? <Profilepage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/settings"
+          element={authUser ? <Settingspage /> : <Navigate to="/login" />}
+        />
+      </Routes>
       <Toaster />
-    </ThemeProvider>
+    </>
   );
 };
 

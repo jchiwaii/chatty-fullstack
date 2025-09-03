@@ -3,56 +3,36 @@ import { ThemeProviderContext } from "../contexts/ThemeContext";
 
 export function ThemeProvider({
   children,
-  defaultTheme = "light",
+  defaultTheme = "system",
   storageKey = "chatty-theme",
   ...props
 }) {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(storageKey);
-      console.log(
-        "Initial theme from storage:",
-        stored,
-        "default:",
-        defaultTheme
-      );
-      return stored || defaultTheme;
-    }
-    return defaultTheme;
-  });
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem(storageKey) || defaultTheme
+  );
 
   useEffect(() => {
     const root = window.document.documentElement;
-    const body = window.document.body;
-
-    console.log("Applying theme:", theme);
-
-    // Remove any existing theme classes from both html and body
-    root.classList.remove("light", "dark");
-    body.classList.remove("light", "dark");
-
-    let appliedTheme = theme;
 
     if (theme === "system") {
-      appliedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-      console.log("Applied system theme:", appliedTheme);
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const systemTheme = mediaQuery.matches ? "dark" : "light";
+      root.setAttribute("data-theme", systemTheme);
+
+      const handleChange = (e) => {
+        root.setAttribute("data-theme", e.matches ? "dark" : "light");
+      };
+
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    } else {
+      root.setAttribute("data-theme", theme);
     }
-
-    // Apply theme to both html and body elements
-    root.classList.add(appliedTheme);
-    body.classList.add(appliedTheme);
-
-    console.log("Applied theme class:", appliedTheme);
-    console.log("HTML classes:", root.className);
-    console.log("Body classes:", body.className);
   }, [theme]);
 
   const value = {
     theme,
     setTheme: (newTheme) => {
-      console.log("Setting theme to:", newTheme);
       localStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
     },

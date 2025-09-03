@@ -1,7 +1,10 @@
 import React from "react";
-import { UserPlus, Search, Users } from "lucide-react";
+import { UserPlus, Search, Users, ArrowLeft } from "lucide-react";
+import { useLayout } from "../../store/useLayout.jsx";
 
 const ContactsPanel = () => {
+  const { setActivePanel } = useLayout();
+
   // Mock data for contacts
   const contacts = [
     {
@@ -39,9 +42,18 @@ const ContactsPanel = () => {
       {/* Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-between">
-          <h2 className="text-h2 text-black dark:text-white">Contacts</h2>
+          <div className="flex items-center gap-3">
+            {/* Mobile back button */}
+            <button
+              onClick={() => setActivePanel("chats")}
+              className="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 rounded transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <h2 className="text-h2 text-black dark:text-white">Contacts</h2>
+          </div>
           <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 rounded transition-colors">
-            <UserPlus className="w-4 h-4" />
+            <UserPlus className="w-5 h-5" />
           </button>
         </div>
       </div>

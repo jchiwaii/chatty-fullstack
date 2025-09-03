@@ -15,7 +15,6 @@ const MainLayout = ({ children }) => {
   const { activePanel } = useLayout();
   const { socket } = useSocket();
   const { addMessage, setUserTyping } = useChat();
-  const { authUser } = useAuth();
 
   // Set up socket event listeners
   useEffect(() => {
@@ -57,18 +56,32 @@ const MainLayout = ({ children }) => {
 
   return (
     <div className="h-screen bg-white dark:bg-black flex overflow-hidden">
-      {/* Icon Sidebar */}
+      {/* Icon Sidebar - Desktop only */}
       <Sidebar />
 
-      {/* Dynamic Panel */}
+      {/* Dynamic Panel - Desktop: sidebar, Mobile: full screen */}
       {activePanel && (
-        <div className="w-80 border-r border-gray-200 dark:border-gray-800 hidden md:block bg-white dark:bg-black">
-          {renderPanel()}
-        </div>
+        <>
+          {/* Desktop Panel */}
+          <div className="w-80 border-r border-gray-200 dark:border-gray-800 hidden md:block bg-white dark:bg-black">
+            {renderPanel()}
+          </div>
+
+          {/* Mobile Panel - Full screen overlay */}
+          <div className="md:hidden fixed inset-0 bg-white dark:bg-black z-40 pb-20">
+            {renderPanel()}
+          </div>
+        </>
       )}
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">{children}</div>
+      {/* Main Content - Hidden on mobile when panel is active */}
+      <div
+        className={`flex-1 flex flex-col min-w-0 ${
+          activePanel ? "hidden md:flex" : "flex"
+        }`}
+      >
+        {children}
+      </div>
     </div>
   );
 };
