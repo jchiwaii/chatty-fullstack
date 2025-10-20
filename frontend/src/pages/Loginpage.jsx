@@ -61,6 +61,12 @@ const ChatBubble = ({ avatar, name, time, isCode, children, delay }) => (
 );
 
 const Loginpage = () => {
+  // Test credentials
+  const TEST_CREDENTIALS = {
+    email: "test@example.com",
+    password: "test123456"
+  };
+
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
@@ -68,6 +74,12 @@ const Loginpage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const { login, isLoggingin, googleSignIn } = useAuth();
+
+  // Function to use test credentials
+  const useTestCredentials = () => {
+    setFormData(TEST_CREDENTIALS);
+    toast.success("Test credentials loaded!");
+  };
 
   const validateForm = () => {
     const { email, password } = formData;
@@ -139,6 +151,39 @@ const Loginpage = () => {
                 <p className="mt-2 text-zinc-400">
                   Sign in to continue your conversation
                 </p>
+              </div>
+            </div>
+
+            {/* Test Credentials Display */}
+            <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 backdrop-blur-sm p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                  <h3 className="text-sm font-semibold text-blue-300">
+                    Test Credentials
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={useTestCredentials}
+                  className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors px-3 py-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30"
+                >
+                  Use these
+                </button>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-zinc-400">Email:</span>
+                  <code className="text-blue-200 font-mono bg-blue-500/10 px-2 py-0.5 rounded">
+                    {TEST_CREDENTIALS.email}
+                  </code>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-zinc-400">Password:</span>
+                  <code className="text-blue-200 font-mono bg-blue-500/10 px-2 py-0.5 rounded">
+                    {TEST_CREDENTIALS.password}
+                  </code>
+                </div>
               </div>
             </div>
 

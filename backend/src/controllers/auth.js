@@ -116,54 +116,48 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+
+  // Validate input first
+  if (!email || !password) {
+    return res.status(400).send("Email and password are required");
+  }
+  if (password.length < 6) {
+    return res.status(400).send("Password must be at least 6 characters long");
+  }
+
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(400).send("Invalid credentials");
-      return;
+      return res.status(400).send("Invalid credentials");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      res.status(400).send("Invalid credientials");
-      return;
+      return res.status(400).send("Invalid credentials");
     }
-    generateToken(user._id, res);
-    res.status(200).json({
+
+    const token = generateToken(user._id, res);
+    return res.status(200).json({
       _id: user._id,
       username: user.username,
       email: user.email,
       profilePicture: user.profilePicture,
-      token: generateToken(user._id, res),
+      token: token,
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).send("Internal server error");
-    return;
+    return res.status(500).send("Internal server error");
   }
-
-  if (!email || !password) {
-    res.status(400).send("Email and password are required");
-    return;
-  }
-  if (password.length < 6) {
-    res.status(400).send("Password must be at least 6 characters long");
-    return;
-  }
-
-  res.send("Login endpoint");
 };
 
 export const logout = (req, res) => {
   try {
     res.clearCookie("token", "", { maxAge: 0 });
-    res.status(200).send("Logged out successfully");
+    return res.status(200).send("Logged out successfully");
   } catch (error) {
     console.error("Logout error:", error);
-    res.status(500).send("Internal server error");
-    return;
+    return res.status(500).send("Internal server error");
   }
-  res.send("Logout endpoint");
 };
 
 export const checkAuth = async (req, res) => {

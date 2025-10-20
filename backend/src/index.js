@@ -22,6 +22,8 @@ const corsOptions = {
     "Authorization",
   ],
   credentials: true,
+  optionsSuccessStatus: 204,
+  preflightContinue: false,
 };
 
 app.use(cors(corsOptions));
