@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Dark mode custom variant for class-based toggling */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Base styles */
 body {
   font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
