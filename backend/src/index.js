@@ -3,6 +3,8 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import authRoutes from "./routes/auth.js";
 import messageRoutes from "./routes/messages.js";
+import contactRoutes from "./routes/contact.js";
+import groupRoutes from "./routes/group.js";
 
 import dotenv from "dotenv";
 import connectDB from "./lib/db.js";
@@ -103,6 +105,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/contacts", contactRoutes);
+app.use("/api/groups", groupRoutes);
 
 const PORT = process.env.PORT || 3000;
 

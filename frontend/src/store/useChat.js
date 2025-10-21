@@ -125,4 +125,49 @@ export const useChat = create((set, get) => ({
   clearAllUnread: () => {
     set({ unreadMessages: {} });
   },
+
+  // Delete chat
+  deleteChat: async (userId) => {
+    try {
+      await axiosInstance.delete(`/messages/chat/${userId}`);
+      toast.success("Chat deleted");
+      // Clear messages if this was the selected user
+      const { selectedUser } = get();
+      if (selectedUser?._id === userId) {
+        set({ messages: [], selectedUser: null });
+      }
+    } catch (error) {
+      console.error("Error deleting chat:", error);
+      toast.error("Failed to delete chat");
+    }
+  },
+
+  // Clear chat
+  clearChat: async (userId) => {
+    try {
+      await axiosInstance.delete(`/messages/clear/${userId}`);
+      toast.success("Chat cleared");
+      // Clear messages if this was the selected user
+      const { selectedUser } = get();
+      if (selectedUser?._id === userId) {
+        set({ messages: [] });
+      }
+    } catch (error) {
+      console.error("Error clearing chat:", error);
+      toast.error("Failed to clear chat");
+    }
+  },
+
+  // Mute/unmute chat
+  toggleMuteChat: async (userId) => {
+    try {
+      const res = await axiosInstance.put(`/messages/mute/${userId}`);
+      toast.success(res.data.message);
+      return res.data.isMuted;
+    } catch (error) {
+      console.error("Error toggling mute:", error);
+      toast.error("Failed to toggle mute");
+      throw error;
+    }
+  },
 }));
