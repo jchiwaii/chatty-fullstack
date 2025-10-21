@@ -1,4 +1,6 @@
 import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import authRoutes from "./routes/auth.js";
 import messageRoutes from "./routes/messages.js";
 
@@ -10,6 +12,7 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
 
 const corsOptions = {
   origin: "http://localhost:5173",
@@ -27,6 +30,57 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// Initialize Socket.IO with CORS configuration
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
+// Store online users
+const onlineUsers = new Map();
+
+// Socket.IO connection handling
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  const userId = socket.handshake.query.userId;
+
+  if (userId && userId !== "undefined") {
+    onlineUsers.set(userId, socket.id);
+
+    // Broadcast online users to all connected clients
+    io.emit("getOnlineUsers", Array.from(onlineUsers.keys()));
+  }
+
+  // Handle typing events
+  socket.on("typing", ({ receiverId, isTyping }) => {
+    const receiverSocketId = onlineUsers.get(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("userTyping", {
+        userId,
+        isTyping,
+      });
+    }
+  });
+
+  // Handle disconnect
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+
+    if (userId) {
+      onlineUsers.delete(userId);
+      io.emit("getOnlineUsers", Array.from(onlineUsers.keys()));
+    }
+  });
+});
+
+// Make io accessible in routes
+app.set("io", io);
+app.set("onlineUsers", onlineUsers);
 
 // Increase payload limits for image uploads
 app.use(
@@ -52,7 +106,7 @@ app.use("/api/messages", messageRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
   connectDB();
 });

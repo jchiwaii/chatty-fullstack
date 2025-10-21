@@ -60,7 +60,18 @@ export const sendMessage = async (req, res) => {
 
     await newMessage.save();
 
-    // TODO: Implement real-time messaging (e.g., using Socket.io)
+    // Populate sender information for real-time notification
+    await newMessage.populate("sender", "username email profilePic");
+
+    // Real-time messaging with Socket.io
+    const io = req.app.get("io");
+    const onlineUsers = req.app.get("onlineUsers");
+    const receiverSocketId = onlineUsers.get(userToChatId);
+
+    if (receiverSocketId) {
+      // Send the message to the receiver if they're online
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
