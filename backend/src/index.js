@@ -16,8 +16,25 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
+// Allow both local development and production frontend URLs
+const allowedOrigins = [
+  "http://localhost:5173", // Local development
+  "http://localhost:5174", // Alternative local port
+  "https://chatty-fullstack.vercel.app", // Production frontend on Vercel
+  process.env.FRONTEND_URL, // Additional frontend URL from env (optional)
+].filter(Boolean); // Remove undefined values
+
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: [
     "Origin",
@@ -36,7 +53,7 @@ app.use(cors(corsOptions));
 // Initialize Socket.IO with CORS configuration
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
