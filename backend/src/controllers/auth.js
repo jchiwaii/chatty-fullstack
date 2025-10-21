@@ -161,7 +161,11 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   try {
-    res.clearCookie("token", "", { maxAge: 0 });
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
     return res.status(200).send("Logged out successfully");
   } catch (error) {
     console.error("Logout error:", error);
@@ -195,7 +199,10 @@ export const updateProfile = async (req, res) => {
     if (profilePicture) updateData.profilePicture = profilePicture;
     if (username) {
       // Check if username is already taken by another user
-      const existingUser = await User.findOne({ username, _id: { $ne: userId } });
+      const existingUser = await User.findOne({
+        username,
+        _id: { $ne: userId },
+      });
       if (existingUser) {
         return res.status(400).json({ message: "Username already taken" });
       }
@@ -213,11 +220,9 @@ export const updateProfile = async (req, res) => {
 
     console.log("Attempting to update user with ID:", userId);
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true }
-    ).select("-password");
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    }).select("-password");
 
     if (!updatedUser) {
       console.error("User not found in database");
@@ -243,9 +248,12 @@ export const updateSettings = async (req, res) => {
     const updateData = { settings: {} };
 
     // Build settings update object
-    if (notifications !== undefined) updateData.settings.notifications = notifications;
-    if (readReceipts !== undefined) updateData.settings.readReceipts = readReceipts;
-    if (messageSound !== undefined) updateData.settings.messageSound = messageSound;
+    if (notifications !== undefined)
+      updateData.settings.notifications = notifications;
+    if (readReceipts !== undefined)
+      updateData.settings.readReceipts = readReceipts;
+    if (messageSound !== undefined)
+      updateData.settings.messageSound = messageSound;
     if (theme !== undefined) {
       if (!["light", "dark", "system"].includes(theme)) {
         return res.status(400).json({ message: "Invalid theme value" });
@@ -253,11 +261,9 @@ export const updateSettings = async (req, res) => {
       updateData.settings.theme = theme;
     }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true }
-    ).select("-password");
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    }).select("-password");
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -280,15 +286,21 @@ export const changePassword = async (req, res) => {
 
     // Check if user is a Google user
     if (req.user.isGoogleUser) {
-      return res.status(400).json({ message: "Google users cannot change password" });
+      return res
+        .status(400)
+        .json({ message: "Google users cannot change password" });
     }
 
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: "Current and new password are required" });
+      return res
+        .status(400)
+        .json({ message: "Current and new password are required" });
     }
 
     if (newPassword.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters long" });
     }
 
     const userId = req.user._id;
@@ -299,7 +311,10 @@ export const changePassword = async (req, res) => {
     }
 
     // Verify current password
-    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Current password is incorrect" });
     }
