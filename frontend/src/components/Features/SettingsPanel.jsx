@@ -15,16 +15,54 @@ import { useAuth } from "../../store/useAuth";
 import { useTheme } from "../../hooks/useTheme";
 
 const SettingsPanel = () => {
-  const { authUser, logout } = useAuth();
+  const { authUser, logout, updateSettings } = useAuth();
   const { theme, setTheme } = useTheme();
   const [expandedSection, setExpandedSection] = useState(null);
 
-  // Toggle states
-  const [notifications, setNotifications] = useState(true);
-  const [readReceipts, setReadReceipts] = useState(true);
+  // Toggle states - initialize from authUser settings
+  const [notifications, setNotifications] = useState(
+    authUser?.settings?.notifications ?? true
+  );
+  const [readReceipts, setReadReceipts] = useState(
+    authUser?.settings?.readReceipts ?? true
+  );
+  const [messageSound, setMessageSound] = useState(
+    authUser?.settings?.messageSound ?? true
+  );
 
   const toggleSection = (section) => {
     setExpandedSection((prev) => (prev === section ? null : section));
+  };
+
+  // Handler to save settings to backend
+  const handleSettingChange = async (setting, value) => {
+    try {
+      await updateSettings({ [setting]: value });
+    } catch (error) {
+      console.error("Failed to update setting:", error);
+    }
+  };
+
+  const handleNotificationChange = async (value) => {
+    setNotifications(value);
+    await handleSettingChange("notifications", value);
+  };
+
+  const handleReadReceiptsChange = async (value) => {
+    setReadReceipts(value);
+    await handleSettingChange("readReceipts", value);
+  };
+
+  const handleMessageSoundChange = async (value) => {
+    setMessageSound(value);
+    await handleSettingChange("messageSound", value);
+  };
+
+  const handleThemeChange = async (isDark) => {
+    const newTheme = isDark ? "dark" : "light";
+    console.log("Settings toggle:", isDark, "current theme:", theme);
+    setTheme(newTheme);
+    await handleSettingChange("theme", newTheme);
   };
 
   const ToggleSwitch = ({ value, onChange, label, description }) => (
@@ -125,7 +163,7 @@ const SettingsPanel = () => {
           <div className="space-y-1 pt-3">
             <ToggleSwitch
               value={readReceipts}
-              onChange={setReadReceipts}
+              onChange={handleReadReceiptsChange}
               label="Read Receipts"
               description="Let others know when you've read their messages"
             />
@@ -141,9 +179,15 @@ const SettingsPanel = () => {
           <div className="space-y-1 pt-3">
             <ToggleSwitch
               value={notifications}
-              onChange={setNotifications}
+              onChange={handleNotificationChange}
               label="Push Notifications"
               description="Receive notifications for new messages"
+            />
+            <ToggleSwitch
+              value={messageSound}
+              onChange={handleMessageSoundChange}
+              label="Message Sounds"
+              description="Play sound when receiving new messages"
             />
           </div>
         </SettingSection>
@@ -153,15 +197,7 @@ const SettingsPanel = () => {
           <div className="space-y-1 pt-3">
             <ToggleSwitch
               value={theme === "dark"}
-              onChange={(isDark) => {
-                console.log(
-                  "Settings toggle:",
-                  isDark,
-                  "current theme:",
-                  theme
-                );
-                setTheme(isDark ? "dark" : "light");
-              }}
+              onChange={handleThemeChange}
               label="Dark Mode"
               description="Use dark theme for the interface"
             />

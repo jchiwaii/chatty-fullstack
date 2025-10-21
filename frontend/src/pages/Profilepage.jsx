@@ -1,11 +1,23 @@
 import { useState } from "react";
 import { useAuth } from "../store/useAuth";
-import { Camera, Mail, User } from "lucide-react";
+import { Camera, Mail, User, Edit2, Save, X, Lock } from "lucide-react";
 import MainLayout from "../components/Layout/MainLayout";
 
 const ProfilePage = () => {
-  const { authUser, isUpdatingProfile, updateProfile } = useAuth();
+  const { authUser, isUpdatingProfile, updateProfile, changePassword } = useAuth();
   const [selectedImg, setSelectedImg] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedProfile, setEditedProfile] = useState({
+    username: authUser?.username || "",
+    email: authUser?.email || "",
+    bio: authUser?.bio || "",
+  });
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   // Function to compress image before upload
   const compressImage = (file, maxWidth = 400, quality = 0.8) => {
@@ -58,6 +70,51 @@ const ProfilePage = () => {
     }
   };
 
+  const handleSaveProfile = async () => {
+    try {
+      await updateProfile(editedProfile);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Profile update failed:", error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditedProfile({
+      username: authUser?.username || "",
+      email: authUser?.email || "",
+      bio: authUser?.bio || "",
+    });
+    setIsEditing(false);
+  };
+
+  const handlePasswordChange = async () => {
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      alert("Passwords don't match!");
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      alert("Password must be at least 6 characters long");
+      return;
+    }
+
+    try {
+      await changePassword({
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      setIsChangingPassword(false);
+    } catch (error) {
+      console.error("Password change failed:", error);
+    }
+  };
+
   return (
     <MainLayout>
       <div className="flex items-center justify-center min-h-full bg-gray-50 p-6">
@@ -105,16 +162,59 @@ const ProfilePage = () => {
             </p>
           </div>
 
+          {/* Edit Button */}
+          <div className="flex justify-end mb-6">
+            {!isEditing ? (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                <Edit2 className="w-4 h-4" />
+                Edit Profile
+              </button>
+            ) : (
+              <div className="flex gap-2">
+                <button
+                  onClick={handleSaveProfile}
+                  disabled={isUpdatingProfile}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                >
+                  <Save className="w-4 h-4" />
+                  Save
+                </button>
+                <button
+                  onClick={handleCancelEdit}
+                  disabled={isUpdatingProfile}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors disabled:opacity-50"
+                >
+                  <X className="w-4 h-4" />
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* Profile Information */}
           <div className="space-y-6">
             <div className="space-y-2">
               <div className="text-sm text-gray-500 flex items-center gap-2">
                 <User className="w-4 h-4" />
-                Full Name
+                Username
               </div>
-              <div className="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="text-gray-900">{authUser?.username}</p>
-              </div>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={editedProfile.username}
+                  onChange={(e) =>
+                    setEditedProfile({ ...editedProfile, username: e.target.value })
+                  }
+                  className="w-full px-4 py-3 bg-white rounded-lg border border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none"
+                />
+              ) : (
+                <div className="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="text-gray-900">{authUser?.username}</p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -122,9 +222,50 @@ const ProfilePage = () => {
                 <Mail className="w-4 h-4" />
                 Email Address
               </div>
-              <div className="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="text-gray-900">{authUser?.email}</p>
+              {isEditing ? (
+                <input
+                  type="email"
+                  value={editedProfile.email}
+                  onChange={(e) =>
+                    setEditedProfile({ ...editedProfile, email: e.target.value })
+                  }
+                  className="w-full px-4 py-3 bg-white rounded-lg border border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none"
+                />
+              ) : (
+                <div className="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="text-gray-900">{authUser?.email}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <div className="text-sm text-gray-500 flex items-center gap-2">
+                <User className="w-4 h-4" />
+                Bio
               </div>
+              {isEditing ? (
+                <textarea
+                  value={editedProfile.bio}
+                  onChange={(e) =>
+                    setEditedProfile({ ...editedProfile, bio: e.target.value })
+                  }
+                  maxLength={200}
+                  rows={3}
+                  className="w-full px-4 py-3 bg-white rounded-lg border border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none resize-none"
+                  placeholder="Tell us about yourself..."
+                />
+              ) : (
+                <div className="px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 min-h-[80px]">
+                  <p className="text-gray-900">
+                    {authUser?.bio || "No bio yet"}
+                  </p>
+                </div>
+              )}
+              {isEditing && (
+                <p className="text-xs text-gray-500 text-right">
+                  {editedProfile.bio.length}/200
+                </p>
+              )}
             </div>
           </div>
 
@@ -146,6 +287,101 @@ const ProfilePage = () => {
               </div>
             </div>
           </div>
+
+          {/* Password Change Section - Only for non-Google users */}
+          {!authUser?.isGoogleUser && (
+            <div className="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-medium text-gray-900">Security</h2>
+                {!isChangingPassword && (
+                  <button
+                    onClick={() => setIsChangingPassword(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                  >
+                    <Lock className="w-4 h-4" />
+                    Change Password
+                  </button>
+                )}
+              </div>
+
+              {isChangingPassword && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-2">
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      value={passwordData.currentPassword}
+                      onChange={(e) =>
+                        setPasswordData({
+                          ...passwordData,
+                          currentPassword: e.target.value,
+                        })
+                      }
+                      className="w-full px-4 py-3 bg-white rounded-lg border border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-2">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={passwordData.newPassword}
+                      onChange={(e) =>
+                        setPasswordData({
+                          ...passwordData,
+                          newPassword: e.target.value,
+                        })
+                      }
+                      className="w-full px-4 py-3 bg-white rounded-lg border border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-2">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={passwordData.confirmPassword}
+                      onChange={(e) =>
+                        setPasswordData({
+                          ...passwordData,
+                          confirmPassword: e.target.value,
+                        })
+                      }
+                      className="w-full px-4 py-3 bg-white rounded-lg border border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none"
+                    />
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      onClick={handlePasswordChange}
+                      className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      Update Password
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsChangingPassword(false);
+                        setPasswordData({
+                          currentPassword: "",
+                          newPassword: "",
+                          confirmPassword: "",
+                        });
+                      }}
+                      className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </MainLayout>

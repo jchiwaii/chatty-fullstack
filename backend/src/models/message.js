@@ -10,13 +10,27 @@ const messageSchema = new mongoose.Schema(
     receiver: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: function () {
+        return !this.group;
+      },
+    },
+    group: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Group",
+      required: function () {
+        return !this.receiver;
+      },
     },
     text: {
       type: String,
     },
     image: {
       type: String,
+    },
+    messageType: {
+      type: String,
+      enum: ["text", "image", "system"],
+      default: "text",
     },
   },
   {

@@ -47,6 +47,9 @@ export const googleSignIn = async (req, res) => {
       username: user.username,
       email: user.email,
       profilePicture: user.profilePicture,
+      bio: user.bio,
+      settings: user.settings,
+      createdAt: user.createdAt,
     });
   } catch (error) {
     console.error("Google Sign-In error:", error);
@@ -107,6 +110,9 @@ export const signup = async (req, res) => {
       username: newUser.username,
       email: newUser.email,
       profilePicture: newUser.profilePicture,
+      bio: newUser.bio,
+      settings: newUser.settings,
+      createdAt: newUser.createdAt,
     });
   } catch (error) {
     console.error("Signup error:", error);
@@ -142,6 +148,9 @@ export const login = async (req, res) => {
       username: user.username,
       email: user.email,
       profilePicture: user.profilePicture,
+      bio: user.bio,
+      settings: user.settings,
+      createdAt: user.createdAt,
       token: token,
     });
   } catch (error) {
@@ -172,14 +181,7 @@ export const checkAuth = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    // console.log("=== UPDATE PROFILE START ===");
-    // console.log("Request headers:", req.headers);
-    // console.log("Request cookies:", req.cookies);
-    // console.log("User from middleware:", req.user);
-    // console.log("Request body:", req.body);
-    // console.log("Body size:", JSON.stringify(req.body).length);
-
-    const { profilePicture } = req.body;
+    const { profilePicture, username, email, bio } = req.body;
 
     if (!req.user) {
       console.error("No user found in request");
@@ -187,18 +189,33 @@ export const updateProfile = async (req, res) => {
     }
 
     const userId = req.user._id;
-    // console.log("User ID:", userId);
+    const updateData = {};
 
-    if (!profilePicture) {
-      console.error("No profile picture in request");
-      return res.status(400).json({ message: "Profile picture is required" });
+    // Add fields to update if they exist in the request
+    if (profilePicture) updateData.profilePicture = profilePicture;
+    if (username) {
+      // Check if username is already taken by another user
+      const existingUser = await User.findOne({ username, _id: { $ne: userId } });
+      if (existingUser) {
+        return res.status(400).json({ message: "Username already taken" });
+      }
+      updateData.username = username;
     }
+    if (email) {
+      // Check if email is already taken by another user
+      const existingUser = await User.findOne({ email, _id: { $ne: userId } });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already taken" });
+      }
+      updateData.email = email;
+    }
+    if (bio !== undefined) updateData.bio = bio;
 
     console.log("Attempting to update user with ID:", userId);
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profilePicture },
+      updateData,
       { new: true }
     ).select("-password");
 
@@ -207,15 +224,96 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // console.log("Profile updated successfully");
-    // console.log("=== UPDATE PROFILE END ===");
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Update profile error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateSettings = async (req, res) => {
+  try {
+    const { notifications, readReceipts, messageSound, theme } = req.body;
+
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const userId = req.user._id;
+    const updateData = { settings: {} };
+
+    // Build settings update object
+    if (notifications !== undefined) updateData.settings.notifications = notifications;
+    if (readReceipts !== undefined) updateData.settings.readReceipts = readReceipts;
+    if (messageSound !== undefined) updateData.settings.messageSound = messageSound;
+    if (theme !== undefined) {
+      if (!["light", "dark", "system"].includes(theme)) {
+        return res.status(400).json({ message: "Invalid theme value" });
+      }
+      updateData.settings.theme = theme;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     return res.status(200).json(updatedUser);
   } catch (error) {
-    // console.error("=== UPDATE PROFILE ERROR ===");
-    // console.error("Error message:", error.message);
-    // console.error("Error stack:", error.stack);
-    // console.error("Error name:", error.name);
+    console.error("Update settings error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    // Check if user is a Google user
+    if (req.user.isGoogleUser) {
+      return res.status(400).json({ message: "Google users cannot change password" });
+    }
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Current and new password are required" });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+    }
+
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Verify current password
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.error("Change password error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

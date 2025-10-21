@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    bio: {
+      type: String,
+      default: "",
+      maxlength: 200,
+    },
     googleId: {
       type: String,
       unique: true,
@@ -32,6 +37,44 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    settings: {
+      notifications: {
+        type: Boolean,
+        default: true,
+      },
+      readReceipts: {
+        type: Boolean,
+        default: true,
+      },
+      messageSound: {
+        type: Boolean,
+        default: true,
+      },
+      theme: {
+        type: String,
+        enum: ["light", "dark", "system"],
+        default: "dark",
+      },
+    },
+    contacts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    mutedChats: [
+      {
+        chatId: {
+          type: String, // Can be userId or groupId
+          required: true,
+        },
+        chatType: {
+          type: String,
+          enum: ["user", "group"],
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -130,4 +130,25 @@ export const useAuth = create((set, get) => ({
       throw error; // Re-throw so the component knows it failed
     }
   },
+  updateSettings: async (settings) => {
+    try {
+      const res = await axios.put("/auth/update-settings", settings);
+      set({ authUser: res.data });
+      toast.success("Settings updated successfully!");
+    } catch (error) {
+      console.error("Error updating settings:", error);
+      toast.error(error.response?.data?.message || "Settings update failed");
+      throw error;
+    }
+  },
+  changePassword: async (passwordData) => {
+    try {
+      await axios.put("/auth/change-password", passwordData);
+      toast.success("Password changed successfully!");
+    } catch (error) {
+      console.error("Error changing password:", error);
+      toast.error(error.response?.data?.message || "Password change failed");
+      throw error;
+    }
+  },
 }));
