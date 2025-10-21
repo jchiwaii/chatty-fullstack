@@ -64,12 +64,12 @@ const Loginpage = () => {
   // Test credentials
   const TEST_CREDENTIALS = {
     email: "test@example.com",
-    password: "test123456"
+    password: "test123456",
   };
 
   const [formData, setFormData] = React.useState({
-    email: "",
-    password: "",
+    email: TEST_CREDENTIALS.email,
+    password: TEST_CREDENTIALS.password,
   });
   const [showPassword, setShowPassword] = React.useState(false);
 
