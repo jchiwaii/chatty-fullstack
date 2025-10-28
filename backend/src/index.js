@@ -63,17 +63,20 @@ const io = new Server(httpServer, {
     origin: function (origin, callback) {
       // Allow requests with no origin
       if (!origin) return callback(null, true);
-      
+
       // Check if origin is in allowed list
       if (allowedOrigins.indexOf(origin) !== -1) {
         return callback(null, true);
       }
-      
+
       // Allow all Vercel preview deployments for chatty-fullstack
-      if (origin && origin.match(/^https:\/\/chatty-fullstack.*\.vercel\.app$/)) {
+      if (
+        origin &&
+        origin.match(/^https:\/\/chatty-fullstack.*\.vercel\.app$/)
+      ) {
         return callback(null, true);
       }
-      
+
       // Reject other origins
       callback(new Error("Not allowed by CORS"));
     },
