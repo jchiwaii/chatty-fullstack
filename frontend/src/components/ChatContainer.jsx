@@ -1,4 +1,5 @@
 import { useChat } from "../store/useChat";
+import { useGroup } from "../store/useGroup";
 import { useSocket } from "../store/useSocket";
 import { useEffect, useRef, useState } from "react";
 import ChatHeader from "./ChatHeader";
@@ -49,7 +50,7 @@ const TypingIndicator = ({ typingUsers, selectedUser }) => {
   );
 };
 
-const MessageBubble = ({ message, isOwn, user, authUser }) => {
+const MessageBubble = ({ message, isOwn, user, authUser, isGroupChat }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -75,6 +76,12 @@ const MessageBubble = ({ message, isOwn, user, authUser }) => {
 
       {/* Message bubble */}
       <div className={`flex flex-col ${isOwn ? "items-end" : "items-start"}`}>
+        {/* Sender name - only show in group chats for others' messages */}
+        {isGroupChat && !isOwn && (
+          <span className="text-xs text-gray-600 dark:text-gray-400 mb-1 px-1 font-medium">
+            {user?.username || "Unknown"}
+          </span>
+        )}
         <div
           className={`relative px-3 py-2 rounded text-sm font-mono ${
             isOwn
@@ -119,19 +126,26 @@ const ChatContainer = () => {
     selectedUser,
     typingUsers,
   } = useChat();
+  const { selectedGroup, groupMessages, isLoading: isLoadingGroup } = useGroup();
   const { authUser } = useAuth();
   const { isUserOnline } = useSocket();
   const messageEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
+  // Determine if we're in group mode or user mode
+  const isGroupChat = !!selectedGroup;
+  const displayMessages = isGroupChat ? groupMessages : messages;
+  const isLoading = isGroupChat ? isLoadingGroup : isLoadingMessages;
+  const chatTarget = isGroupChat ? selectedGroup : selectedUser;
+
   useEffect(() => {
-    if (messageEndRef.current && messages.length > 0) {
+    if (messageEndRef.current && displayMessages.length > 0) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [displayMessages]);
 
-  // Show loading state only when we have a selected user but are loading messages
-  if (isLoadingMessages && selectedUser) {
+  // Show loading state only when we have a selected target but are loading messages
+  if (isLoading && chatTarget) {
     return (
       <div className="h-full flex flex-col bg-white dark:bg-black">
         <ChatHeader />
@@ -143,8 +157,8 @@ const ChatContainer = () => {
     );
   }
 
-  // If no selected user, this shouldn't render (EmptyState should show instead)
-  if (!selectedUser) {
+  // If no selected target, this shouldn't render (EmptyState should show instead)
+  if (!chatTarget) {
     return null;
   }
 
@@ -157,21 +171,31 @@ const ChatContainer = () => {
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700 scrollbar-track-transparent"
       >
-        {messages.length === 0 && !isLoadingMessages ? (
+        {displayMessages.length === 0 && !isLoading ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-gray-400">
             <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
               <MessageSquare className="w-8 h-8" />
             </div>
             <p className="text-lg font-medium mb-2">No messages yet</p>
             <p className="text-sm text-center">
-              Start the conversation with {selectedUser?.username}
+              {isGroupChat
+                ? `Start the conversation in ${selectedGroup?.name}`
+                : `Start the conversation with ${selectedUser?.username}`}
             </p>
           </div>
         ) : (
           <AnimatePresence>
-            {messages.map((message, index) => {
-              const isOwn = message.sender === authUser._id;
-              const user = isOwn ? authUser : selectedUser;
+            {displayMessages.map((message, index) => {
+              const isOwn = message.sender === authUser._id || message.sender?._id === authUser._id;
+
+              // For group chats, message.sender is populated with user data
+              // For direct chats, we need to determine the user
+              let user;
+              if (isGroupChat) {
+                user = isOwn ? authUser : message.sender;
+              } else {
+                user = isOwn ? authUser : selectedUser;
+              }
 
               return (
                 <MessageBubble
@@ -180,19 +204,22 @@ const ChatContainer = () => {
                   isOwn={isOwn}
                   user={user}
                   authUser={authUser}
+                  isGroupChat={isGroupChat}
                 />
               );
             })}
           </AnimatePresence>
         )}
 
-        {/* Typing Indicator */}
-        <AnimatePresence>
-          <TypingIndicator
-            typingUsers={typingUsers}
-            selectedUser={selectedUser}
-          />
-        </AnimatePresence>
+        {/* Typing Indicator - only for direct chats */}
+        {!isGroupChat && (
+          <AnimatePresence>
+            <TypingIndicator
+              typingUsers={typingUsers}
+              selectedUser={selectedUser}
+            />
+          </AnimatePresence>
+        )}
 
         <div ref={messageEndRef} />
       </div>

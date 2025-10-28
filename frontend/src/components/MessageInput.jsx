@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useChat } from "../store/useChat";
+import { useGroup } from "../store/useGroup";
 import { useSocket } from "../store/useSocket";
 import { Image, Send, X, Smile, Paperclip } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,7 +16,11 @@ const MessageInput = () => {
   const typingTimeoutRef = useRef(null);
 
   const { sendMessage, selectedUser } = useChat();
+  const { sendGroupMessage, selectedGroup } = useGroup();
   const { emitTyping } = useSocket();
+
+  const isGroupChat = !!selectedGroup;
+  const chatTarget = isGroupChat ? selectedGroup : selectedUser;
 
   // Auto-resize textarea
   useEffect(() => {
@@ -26,9 +31,9 @@ const MessageInput = () => {
     }
   }, [text]);
 
-  // Handle typing indicators
+  // Handle typing indicators - only for direct chats
   useEffect(() => {
-    if (!selectedUser) return;
+    if (!selectedUser || isGroupChat) return;
 
     if (text.trim() && !isTyping) {
       setIsTyping(true);
@@ -53,7 +58,7 @@ const MessageInput = () => {
         clearTimeout(typingTimeoutRef.current);
       }
     };
-  }, [text, selectedUser, isTyping, emitTyping]);
+  }, [text, selectedUser, isTyping, emitTyping, isGroupChat]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -85,18 +90,25 @@ const MessageInput = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
+    if (!chatTarget) return;
 
-    // Stop typing indicator
-    if (isTyping) {
+    // Stop typing indicator for direct chats
+    if (isTyping && !isGroupChat) {
       setIsTyping(false);
       emitTyping(selectedUser._id, false);
     }
 
     try {
-      await sendMessage({
+      const messageData = {
         text: text.trim(),
         image: imagePreview,
-      });
+      };
+
+      if (isGroupChat) {
+        await sendGroupMessage(selectedGroup._id, messageData);
+      } else {
+        await sendMessage(messageData);
+      }
 
       // Clear form
       setText("");

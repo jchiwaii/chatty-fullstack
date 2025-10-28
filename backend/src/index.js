@@ -18,10 +18,10 @@ const httpServer = createServer(app);
 
 // Allow both local development and production frontend URLs
 const allowedOrigins = [
-  "http://localhost:5173", // Local development
-  "http://localhost:5174", // Alternative local port
-  "https://chatty-fullstack.vercel.app", // Production frontend on Vercel
-  process.env.FRONTEND_URL, // Additional frontend URL from env (optional)
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://chatty-fullstack.vercel.app",
+  process.env.FRONTEND_URL,
 ].filter(Boolean); // Remove undefined values
 
 const corsOptions = {
