@@ -209,7 +209,7 @@ const MessageInput = () => {
       {/* Input Form */}
       <form onSubmit={handleSendMessage} className="flex items-end gap-3">
         <div className="flex-1 relative">
-          <div className="flex items-end bg-zinc-100 dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus-within:border-blue-500 dark:focus-within:border-blue-400 transition-colors">
+          <div className="flex items-end bg-zinc-100 dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus-within:border-primary dark:focus-within:border-primary transition-colors">
             {/* Attachment button */}
             <button
               type="button"
@@ -267,7 +267,7 @@ const MessageInput = () => {
         <motion.button
           type="submit"
           disabled={!text.trim() && !imagePreview}
-          className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl hover:from-blue-500 hover:to-purple-500 disabled:from-zinc-300 disabled:to-zinc-300 dark:disabled:from-zinc-700 dark:disabled:to-zinc-700 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-none"
+          className="p-3 bg-primary text-black rounded-2xl hover:bg-primary/90 disabled:from-zinc-300 disabled:to-zinc-300 dark:disabled:from-zinc-700 dark:disabled:to-zinc-700 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-none"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

@@ -87,7 +87,7 @@ const ChatList = () => {
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-200"
+            className="w-full pl-10 pr-4 py-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:focus:border-primary transition-all duration-200"
           />
         </div>
       </div>
@@ -126,7 +126,7 @@ const ChatList = () => {
                     onClick={() => handleUserSelect(user)}
                     className={`relative p-4 rounded-xl cursor-pointer transition-all duration-200 mb-2 ${
                       isSelected
-                        ? "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800"
+                        ? "bg-primary/10 dark:from-primary/20 dark:to-primary/20 border border-primary/30 dark:border-primary/30"
                         : "hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                     }`}
                   >
@@ -182,7 +182,7 @@ const ChatList = () => {
                       <motion.div
                         initial={{ scaleY: 0 }}
                         animate={{ scaleY: 1 }}
-                        className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-r-full"
+                        className="absolute left-0 top-2 bottom-2 w-1 bg-primary rounded-r-full"
                       />
                     )}
                   </motion.div>

@@ -71,7 +71,7 @@ const ChatHeader = () => {
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-sm text-blue-600 dark:text-blue-400 font-medium"
+                  className="text-sm text-primary dark:text-primary font-medium"
                 >
                   typing...
                 </motion.p>

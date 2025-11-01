@@ -9,8 +9,8 @@ const FeatureCard = ({ icon: Icon, title, description, delay }) => (
     transition={{ delay, duration: 0.5 }}
     className="flex items-start gap-4 p-4 rounded-xl bg-white/50 dark:bg-zinc-800/50 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50 hover:bg-white/80 dark:hover:bg-zinc-800/80 transition-all duration-300"
   >
-    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center shadow-lg">
-      <Icon className="w-5 h-5 text-white" />
+    <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg">
+      <Icon className="w-5 h-5 text-black" />
     </div>
     <div>
       <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
@@ -45,11 +45,11 @@ const EmptyState = () => {
       {/* Floating background elements */}
       <FloatingElement
         delay={0}
-        className="top-20 left-20 w-2 h-2 bg-blue-400/30 rounded-full blur-sm"
+        className="top-20 left-20 w-2 h-2 bg-primary/30 rounded-full blur-sm"
       />
       <FloatingElement
         delay={2}
-        className="top-40 right-32 w-3 h-3 bg-purple-400/20 rounded-full blur-sm"
+        className="top-40 right-32 w-3 h-3 bg-primary/20 rounded-full blur-sm"
       />
       <FloatingElement
         delay={4}
@@ -69,9 +69,9 @@ const EmptyState = () => {
           className="mb-8"
         >
           <div className="relative inline-block">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-2xl scale-150"></div>
-            <div className="relative w-24 h-24 mx-auto bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-2xl">
-              <MessageSquare className="w-12 h-12 text-white" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/20 rounded-full blur-2xl scale-150"></div>
+            <div className="relative w-24 h-24 mx-auto bg-primary rounded-full flex items-center justify-center shadow-2xl">
+              <MessageSquare className="w-12 h-12 text-black" />
             </div>
           </div>
         </motion.div>

@@ -120,18 +120,18 @@ const Loginpage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black font-sans text-white">
+    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black text-white">
       <div className="grid min-h-screen lg:grid-cols-2">
         {/* Left Column: Form */}
         <div className="flex items-center justify-center p-6 sm:p-12 relative">
           {/* Floating background elements */}
           <FloatingElement
             delay={0}
-            className="absolute top-20 left-10 w-2 h-2 bg-blue-500/20 rounded-full blur-sm"
+            className="absolute top-20 left-10 w-2 h-2 bg-primary/20 rounded-full blur-sm"
           />
           <FloatingElement
             delay={2}
-            className="absolute top-40 right-20 w-3 h-3 bg-purple-500/20 rounded-full blur-sm"
+            className="absolute top-40 right-20 w-3 h-3 bg-primary/20 rounded-full blur-sm"
           />
           <FloatingElement
             delay={4}
@@ -141,7 +141,7 @@ const Loginpage = () => {
           <div className="w-full max-w-md space-y-8 relative z-10">
             <div className="text-center space-y-4">
               <div className="relative inline-block">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/20 rounded-full blur-xl"></div>
                 <MessageCircle className="relative mx-auto h-12 w-12 text-white" />
               </div>
               <div>
@@ -155,18 +155,18 @@ const Loginpage = () => {
             </div>
 
             {/* Test Credentials Display */}
-            <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 backdrop-blur-sm p-4 space-y-3">
+            <div className="rounded-xl border border-primary/30 bg-primary/5 backdrop-blur-sm p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
-                  <h3 className="text-sm font-semibold text-blue-300">
+                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                  <h3 className="text-sm font-semibold text-primary">
                     Test Credentials
                   </h3>
                 </div>
                 <button
                   type="button"
                   onClick={useTestCredentials}
-                  className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors px-3 py-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30"
+                  className="text-xs font-medium text-primary hover:text-primary/80 transition-colors px-3 py-1 rounded-lg bg-primary/10 hover:bg-primary/20 border border-primary/30"
                 >
                   Use these
                 </button>
@@ -174,13 +174,13 @@ const Loginpage = () => {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="text-zinc-400">Email:</span>
-                  <code className="text-blue-200 font-mono bg-blue-500/10 px-2 py-0.5 rounded">
+                  <code className="text-primary font-mono bg-primary/10 px-2 py-0.5 rounded">
                     {TEST_CREDENTIALS.email}
                   </code>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-zinc-400">Password:</span>
-                  <code className="text-blue-200 font-mono bg-blue-500/10 px-2 py-0.5 rounded">
+                  <code className="text-primary font-mono bg-primary/10 px-2 py-0.5 rounded">
                     {TEST_CREDENTIALS.password}
                   </code>
                 </div>
@@ -199,7 +199,7 @@ const Loginpage = () => {
                   <input
                     id="email"
                     type="email"
-                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-blue-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-primary/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={(e) =>
@@ -219,7 +219,7 @@ const Loginpage = () => {
                     </label>
                     <Link
                       to="/forgot-password"
-                      className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                      className="text-sm text-primary hover:text-primary/80 transition-colors"
                     >
                       Forgot password?
                     </Link>
@@ -228,7 +228,7 @@ const Loginpage = () => {
                     <input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 pr-12 text-white placeholder-zinc-500 transition-all duration-200 focus:border-blue-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 pr-12 text-white placeholder-zinc-500 transition-all duration-200 focus:border-primary/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Enter your password"
                       value={formData.password}
                       onChange={(e) =>
@@ -253,7 +253,7 @@ const Loginpage = () => {
 
               <button
                 type="submit"
-                className="w-full flex justify-center items-center rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:from-blue-500 hover:to-purple-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                className="w-full flex justify-center items-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                 disabled={isLoggingin}
               >
                 {isLoggingin ? (
@@ -290,7 +290,7 @@ const Loginpage = () => {
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+                className="font-semibold text-primary hover:text-primary/80 transition-colors"
               >
                 Sign up
               </Link>
@@ -301,16 +301,16 @@ const Loginpage = () => {
         {/* Right Column: Enhanced Visuals */}
         <div className="relative hidden items-center justify-center p-8 lg:flex overflow-hidden">
           {/* Animated background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-green-500/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/5 to-green-500/5"></div>
 
           {/* Floating particles */}
           <FloatingElement
             delay={0}
-            className="absolute top-20 left-20 w-1 h-1 bg-blue-400/40 rounded-full"
+            className="absolute top-20 left-20 w-1 h-1 bg-primary/40 rounded-full"
           />
           <FloatingElement
             delay={1}
-            className="absolute top-40 right-32 w-2 h-2 bg-purple-400/30 rounded-full"
+            className="absolute top-40 right-32 w-2 h-2 bg-primary/30 rounded-full"
           />
           <FloatingElement
             delay={2}

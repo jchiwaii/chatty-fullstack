@@ -111,21 +111,21 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black font-sans text-white">
+    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black text-white">
       <div className="grid min-h-screen lg:grid-cols-2">
         {/* Left Column: Enhanced Visuals */}
         <div className="relative hidden items-center justify-center p-8 lg:flex overflow-hidden">
           {/* Animated background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-green-500/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/5 to-green-500/5"></div>
 
           {/* Floating particles */}
           <FloatingElement
             delay={0}
-            className="absolute top-20 left-20 w-1 h-1 bg-purple-400/40 rounded-full"
+            className="absolute top-20 left-20 w-1 h-1 bg-primary/40 rounded-full"
           />
           <FloatingElement
             delay={1}
-            className="absolute top-40 right-32 w-2 h-2 bg-blue-400/30 rounded-full"
+            className="absolute top-40 right-32 w-2 h-2 bg-primary/30 rounded-full"
           />
           <FloatingElement
             delay={2}
@@ -182,11 +182,11 @@ const SignupPage = () => {
           {/* Floating background elements */}
           <FloatingElement
             delay={0}
-            className="absolute top-20 left-10 w-2 h-2 bg-purple-500/20 rounded-full blur-sm"
+            className="absolute top-20 left-10 w-2 h-2 bg-primary/20 rounded-full blur-sm"
           />
           <FloatingElement
             delay={2}
-            className="absolute top-40 right-20 w-3 h-3 bg-blue-500/20 rounded-full blur-sm"
+            className="absolute top-40 right-20 w-3 h-3 bg-primary/20 rounded-full blur-sm"
           />
           <FloatingElement
             delay={4}
@@ -196,7 +196,7 @@ const SignupPage = () => {
           <div className="w-full max-w-md space-y-8 relative z-10">
             <div className="text-center space-y-4">
               <div className="relative inline-block">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/20 rounded-full blur-xl"></div>
                 <MessageSquare className="relative mx-auto h-12 w-12 text-white" />
               </div>
               <div>
@@ -222,7 +222,7 @@ const SignupPage = () => {
                     <input
                       id="firstName"
                       type="text"
-                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-primary/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="John"
                       value={formData.firstName}
                       onChange={(e) =>
@@ -241,7 +241,7 @@ const SignupPage = () => {
                     <input
                       id="lastName"
                       type="text"
-                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-primary/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Doe"
                       value={formData.lastName}
                       onChange={(e) =>
@@ -262,7 +262,7 @@ const SignupPage = () => {
                   <input
                     id="username"
                     type="text"
-                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-primary/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                     placeholder="johndoe"
                     value={formData.username}
                     onChange={(e) =>
@@ -282,7 +282,7 @@ const SignupPage = () => {
                   <input
                     id="email"
                     type="email"
-                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                    className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 text-white placeholder-zinc-500 transition-all duration-200 focus:border-primary/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                     placeholder="john@example.com"
                     value={formData.email}
                     onChange={(e) =>
@@ -303,7 +303,7 @@ const SignupPage = () => {
                     <input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 pr-12 text-white placeholder-zinc-500 transition-all duration-200 focus:border-purple-500/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                      className="block w-full rounded-xl border border-zinc-700/50 bg-zinc-900/50 backdrop-blur-sm px-4 py-3 pr-12 text-white placeholder-zinc-500 transition-all duration-200 focus:border-primary/50 focus:bg-zinc-800/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Create a strong password"
                       value={formData.password}
                       onChange={(e) =>
@@ -328,7 +328,7 @@ const SignupPage = () => {
 
               <button
                 type="submit"
-                className="w-full flex justify-center items-center rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:from-purple-500 hover:to-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                className="w-full flex justify-center items-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                 disabled={isSigningup}
               >
                 {isSigningup ? (
@@ -368,7 +368,7 @@ const SignupPage = () => {
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="font-semibold text-purple-400 hover:text-purple-300 transition-colors"
+                className="font-semibold text-primary hover:text-primary/80 transition-colors"
               >
                 Sign in
               </Link>
