@@ -267,7 +267,7 @@ const MessageInput = () => {
         <motion.button
           type="submit"
           disabled={!text.trim() && !imagePreview}
-          className="p-3 bg-primary text-black rounded-2xl hover:bg-primary/90 disabled:from-zinc-300 disabled:to-zinc-300 dark:disabled:from-zinc-700 dark:disabled:to-zinc-700 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-none"
+          className="p-3 bg-black dark:bg-primary text-white dark:text-black rounded-2xl hover:bg-zinc-800 dark:hover:bg-primary/90 disabled:bg-zinc-300 dark:disabled:bg-zinc-700 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-none"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

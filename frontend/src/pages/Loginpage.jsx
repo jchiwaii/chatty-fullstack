@@ -253,12 +253,12 @@ const Loginpage = () => {
 
               <button
                 type="submit"
-                className="w-full flex justify-center items-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                className="w-full flex justify-center items-center rounded-xl bg-white hover:bg-zinc-100 px-4 py-3 text-sm font-semibold text-black transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                 disabled={isLoggingin}
               >
                 {isLoggingin ? (
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
                     Signing in...
                   </div>
                 ) : (

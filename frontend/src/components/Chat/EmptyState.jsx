@@ -9,8 +9,8 @@ const FeatureCard = ({ icon: Icon, title, description, delay }) => (
     transition={{ delay, duration: 0.5 }}
     className="flex items-start gap-4 p-4 rounded-xl bg-white/50 dark:bg-zinc-800/50 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50 hover:bg-white/80 dark:hover:bg-zinc-800/80 transition-all duration-300"
   >
-    <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg">
-      <Icon className="w-5 h-5 text-black" />
+    <div className="w-10 h-10 bg-primary dark:bg-primary rounded-lg flex items-center justify-center shadow-lg border-2 border-black/10 dark:border-primary/20">
+      <Icon className="w-5 h-5 text-black dark:text-black" />
     </div>
     <div>
       <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
@@ -70,8 +70,8 @@ const EmptyState = () => {
         >
           <div className="relative inline-block">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/20 rounded-full blur-2xl scale-150"></div>
-            <div className="relative w-24 h-24 mx-auto bg-primary rounded-full flex items-center justify-center shadow-2xl">
-              <MessageSquare className="w-12 h-12 text-black" />
+            <div className="relative w-24 h-24 mx-auto bg-primary dark:bg-primary rounded-full flex items-center justify-center shadow-2xl border-4 border-black/10 dark:border-primary/20">
+              <MessageSquare className="w-12 h-12 text-black dark:text-black" />
             </div>
           </div>
         </motion.div>
